@@ -63,6 +63,17 @@ export default function UserInputForm({ onSubmit, isLoading }) {
           </button>
         </div>
       </form>
+      <p style={{
+        marginTop: '1.5rem',
+        textAlign: 'center',
+        color: 'var(--text-muted)',
+        fontSize: '0.85rem',
+        fontFamily: 'var(--font-mono)',
+        fontWeight: '500',
+        letterSpacing: '0.02em'
+      }}>
+        Hope you find your perfect match...
+      </p>
     </div>
   </div>
 );
