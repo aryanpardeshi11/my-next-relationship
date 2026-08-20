@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
 export default function ZigZagDiagram({ matchData, matchSource }) {
-  const [visibleCount, setVisibleCount] = useState(1);
+  const [activeStep, setActiveStep] = useState(1);
+  const [isDone, setIsDone] = useState(false);
+  const [scrambleValue, setScrambleValue] = useState('');
   const [hoveredNode, setHoveredNode] = useState(null);
 
   if (!matchData) return null;
@@ -13,96 +15,125 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
     '#00E699', // Green - Node 4 Job
     '#FF7E36', // Orange - Node 5 Personality
     '#8B5CF6', // Purple - Node 6 Hobby
-    '#FF3366'  // Red/Hot Pink - Node 7 Red Flag
+    '#FF3366'  // Hot Red - Node 7 Red Flag
   ];
 
-  // Symmetrical 7-node wave layout (Valley -> Peak -> Valley -> Peak -> Valley -> Peak -> Valley)
+  // Symmetrical 7-Node Wave Layout (Valley -> Peak -> Valley -> Peak -> Valley -> Peak -> Valley)
+  // Compact Y bounds so the entire screen fits within 100% Chrome view without scrolling
   const nodes = [
-    { id: 'age', label: 'AGE', value: matchData.age, x: 85, y: 300, cardY: 330, color: colors[0] },
-    { id: 'gender', label: 'GENDER', value: matchData.gender, x: 215, y: 110, cardY: 20, color: colors[1] },
-    { id: 'height', label: 'HEIGHT', value: matchData.height, x: 345, y: 300, cardY: 330, color: colors[2] },
-    { id: 'job', label: 'OCCUPATION', value: matchData.job, x: 475, y: 110, cardY: 20, color: colors[3] },
-    { id: 'personality', label: 'PERSONALITY', value: matchData.personality || matchData.trait, x: 605, y: 300, cardY: 330, color: colors[4] },
-    { id: 'hobby', label: 'PRIMARY HOBBY', value: matchData.hobby, x: 735, y: 110, cardY: 20, color: colors[5] },
-    { id: 'redFlag', label: 'MAJOR RED FLAG', value: matchData.redFlag || 'Claps when airplane lands', x: 865, y: 300, cardY: 330, color: colors[6] }
+    { id: 'age', label: 'AGE', value: matchData.age, x: 80, y: 220, cardY: 240, color: colors[0] },
+    { id: 'gender', label: 'GENDER', value: matchData.gender, x: 210, y: 75, cardY: 10, color: colors[1] },
+    { id: 'height', label: 'HEIGHT', value: matchData.height, x: 340, y: 220, cardY: 240, color: colors[2] },
+    { id: 'job', label: 'OCCUPATION', value: matchData.job, x: 470, y: 75, cardY: 10, color: colors[3] },
+    { id: 'personality', label: 'PERSONALITY', value: matchData.personality || matchData.trait, x: 600, y: 220, cardY: 240, color: colors[4] },
+    { id: 'hobby', label: 'PRIMARY HOBBY', value: matchData.hobby, x: 730, y: 75, cardY: 10, color: colors[5] },
+    { id: 'redFlag', label: 'RED FLAG', value: matchData.redFlag || 'Claps when airplane lands', x: 860, y: 220, cardY: 240, color: colors[6] }
   ];
 
-  // Animate node prediction sequentially 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7
+  // Sample pools for real-time text scramble animation during prediction
+  const scramblePools = {
+    age: ['15 (Mental age 90)', '74 (Tells war stories)', '19 (Refuses adulthood)', '82 (Ex-gymnast)', '47 (Retired early)'],
+    gender: ['Genderfluid', 'Agender', 'Non-binary', 'Two-Spirit', 'Demigirl', 'Transgender Woman', 'Cisgender Male'],
+    height: ['4\'11" and ¾"', '6\'8"', '5\'2" (5\'7" in boots)', '7\'1"', '6\'1.5"'],
+    job: ['Golf Ball Diver', 'Water Slide Tester', 'Professional Line Stander', 'Snake Milker', 'Odor Judge'],
+    personality: ['Fears Tupperware', 'Ranks soup brands', 'Only eats yellow foods', 'Communicates in quotes'],
+    hobby: ['Competitive bird watching', 'Collecting vintage lint', 'Baking micro-pies', 'Aggressive origami'],
+    redFlag: ['Claps when airplane lands', 'Brings Excel to dates', 'Whispers "nice" when paying', 'No napkins user']
+  };
+
+  // Step timer: Move dark line from 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7
   useEffect(() => {
-    setVisibleCount(1);
+    setActiveStep(1);
+    setIsDone(false);
+
+    let step = 1;
     const interval = setInterval(() => {
-      setVisibleCount((prev) => {
-        if (prev < nodes.length) {
-          return prev + 1;
-        } else {
-          clearInterval(interval);
-          return prev;
-        }
-      });
-    }, 600);
+      step++;
+      if (step <= nodes.length) {
+        setActiveStep(step);
+      } else {
+        setIsDone(true);
+        clearInterval(interval);
+      }
+    }, 550);
 
     return () => clearInterval(interval);
   }, [matchData]);
 
-  const isComplete = visibleCount === nodes.length;
-  const animatedNodes = nodes.slice(0, visibleCount);
-  const activePolylinePoints = animatedNodes.map(n => `${n.x},${n.y}`).join(' ');
+  // Real-time text scrambling for the node currently being predicted
+  useEffect(() => {
+    if (isDone || activeStep > nodes.length) return;
+
+    const currNode = nodes[activeStep - 1];
+    const pool = scramblePools[currNode.id] || [currNode.value];
+
+    const scrambleTimer = setInterval(() => {
+      const randVal = pool[Math.floor(Math.random() * pool.length)];
+      setScrambleValue(randVal);
+    }, 50);
+
+    return () => clearInterval(scrambleTimer);
+  }, [activeStep, isDone]);
+
+  // Active line points up to current predicting node
+  const activeNodes = nodes.slice(0, activeStep);
+  const activePolylinePoints = activeNodes.map(n => `${n.x},${n.y}`).join(' ');
   const fullPolylinePoints = nodes.map(n => `${n.x},${n.y}`).join(' ');
 
   return (
     <div className="diagram-container">
-      {/* Header section with main large title PREDICTIVE MATCH PATH */}
-      <div className="diagram-header" style={{ marginBottom: '2rem' }}>
+      {/* Header section with main title and live status tag */}
+      <div className="diagram-header" style={{ marginBottom: '0.75rem', paddingBottom: '0.5rem' }}>
         <div>
-          <h2 style={{ fontSize: '1.6rem', fontWeight: '900', letterSpacing: '0.02em' }}>
+          <h2 style={{ fontSize: '1.4rem', fontWeight: '900', letterSpacing: '0.02em', textTransform: 'uppercase' }}>
             PREDICTIVE MATCH PATH
           </h2>
         </div>
-        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
           <span className="match-source-badge">
             SOURCE: {matchSource === 'gemini' ? 'GEMINI API (LIVE)' : 'LOCAL SIMULATOR'}
           </span>
           <span
             className="mono-tag"
             style={{
-              padding: '0.35rem 0.75rem',
-              border: '2.5px solid #000',
-              background: isComplete ? 'var(--pop-green)' : 'var(--pop-yellow)',
-              boxShadow: '2.5px 2.5px 0px #000',
+              padding: '0.3rem 0.6rem',
+              border: '2px solid #000',
+              background: isDone ? 'var(--pop-green)' : 'var(--pop-yellow)',
+              boxShadow: '2px 2px 0px #000',
               color: '#000'
             }}
           >
-            {isComplete ? '✓ MATCH PREDICTED' : `⚡ PREDICTING NODE 0${visibleCount}...`}
+            {isDone ? '✓ MATCH PREDICTED' : `⚡ PREDICTING NODE 0${activeStep}...`}
           </span>
         </div>
       </div>
 
-      {/* SVG Symmetrical 7-Node Wave Path Viewport */}
-      <div style={{ position: 'relative', width: '100%', minHeight: '440px' }}>
+      {/* SVG Symmetrical 7-Node Wave Path Viewport (Compact Viewport Height to fit 100% zoom) */}
+      <div style={{ position: 'relative', width: '100%' }}>
         <svg
-          viewBox="0 0 950 440"
+          viewBox="0 0 940 320"
           style={{ width: '100%', height: 'auto', display: 'block', overflow: 'visible' }}
         >
           <defs>
-            <pattern id="dot-grid" width="20" height="20" patternUnits="userSpaceOnUse">
-              <circle cx="3" cy="3" r="1.5" fill="#D6D1C0" />
+            <pattern id="dot-grid" width="18" height="18" patternUnits="userSpaceOnUse">
+              <circle cx="2.5" cy="2.5" r="1.2" fill="#D6D1C0" />
             </pattern>
           </defs>
 
           {/* Background dot grid */}
-          <rect width="950" height="440" fill="url(#dot-grid)" opacity="0.7" />
+          <rect width="940" height="320" fill="url(#dot-grid)" opacity="0.6" />
 
-          {/* Full path ghost line */}
+          {/* Ghost dashed path line connecting all 7 nodes */}
           <polyline
             points={fullPolylinePoints}
             fill="none"
-            stroke="#CCCCCC"
+            stroke="#D0D0D0"
             strokeWidth="3"
-            strokeDasharray="6,6"
+            strokeDasharray="5,5"
           />
 
-          {/* Active Animated Polyline Path */}
-          {animatedNodes.length > 1 && (
+          {/* Dark Active Line extending from Node 1 -> 2 -> ... -> activeStep in real time */}
+          {activeNodes.length > 1 && (
             <polyline
               points={activePolylinePoints}
               fill="none"
@@ -113,61 +144,60 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
             />
           )}
 
-          {/* Render Nodes & Cards */}
+          {/* Render ALL 7 Nodes at their fixed positions 1 through 7 */}
           {nodes.map((node, index) => {
-            const isVisible = index < visibleCount;
-            const isCurrentPredicting = index === visibleCount - 1 && !isComplete;
+            const stepNum = index + 1;
+            const isReached = stepNum <= activeStep;
+            const isCurrentlyPredicting = stepNum === activeStep && !isDone;
             const isHovered = hoveredNode === node.id;
+
+            // Determine text value to display
+            let displayValue = '';
+            if (isDone || stepNum < activeStep) {
+              displayValue = node.value;
+            } else if (isCurrentlyPredicting) {
+              displayValue = scrambleValue || node.value;
+            } else {
+              displayValue = '...';
+            }
 
             return (
               <g
                 key={node.id}
-                onMouseEnter={() => isVisible && setHoveredNode(node.id)}
+                onMouseEnter={() => (isDone || isReached) && setHoveredNode(node.id)}
                 onMouseLeave={() => setHoveredNode(null)}
                 style={{
-                  cursor: isVisible ? 'pointer' : 'default',
-                  opacity: isVisible ? 1 : 0.35,
-                  transition: 'opacity 0.3s ease'
+                  cursor: isReached ? 'pointer' : 'default',
+                  transition: 'opacity 0.2s ease'
                 }}
               >
-                {/* Pulsing ring for current predicting node */}
-                {isCurrentPredicting && (
+                {/* Real-time pulse ring on predicting node */}
+                {isCurrentlyPredicting && (
                   <circle
                     cx={node.x}
                     cy={node.y}
-                    r="24"
+                    r="22"
                     fill="none"
                     stroke={node.color}
-                    strokeWidth="3.5"
-                    opacity="0.8"
+                    strokeWidth="3"
                   >
-                    <animate
-                      attributeName="r"
-                      values="16;28;16"
-                      dur="1s"
-                      repeatCount="indefinite"
-                    />
-                    <animate
-                      attributeName="opacity"
-                      values="1;0.2;1"
-                      dur="1s"
-                      repeatCount="indefinite"
-                    />
+                    <animate attributeName="r" values="14;26;14" dur="0.8s" repeatCount="indefinite" />
+                    <animate attributeName="opacity" values="1;0.3;1" dur="0.8s" repeatCount="indefinite" />
                   </circle>
                 )}
 
-                {/* Outer Node Circle */}
+                {/* Fixed Node Circle */}
                 <circle
                   cx={node.x}
                   cy={node.y}
-                  r={isHovered ? 18 : 14}
-                  fill={isVisible ? node.color : '#FFFFFF'}
+                  r={isHovered ? 17 : 13}
+                  fill={isReached ? node.color : '#FFFFFF'}
                   stroke="#000000"
-                  strokeWidth="3"
+                  strokeWidth="2.5"
                   style={{ transition: 'all 0.15s ease' }}
                 />
 
-                {/* Inner Step Index */}
+                {/* Fixed Number Label (1 through 7) */}
                 <text
                   x={node.x}
                   y={node.y + 4}
@@ -178,53 +208,47 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
                   fontWeight="900"
                   pointerEvents="none"
                 >
-                  {index + 1}
+                  {stepNum}
                 </text>
 
-                {/* Dynamic Parameter Card (Only shown once reached by prediction animation) */}
-                {isVisible && (
-                  <g transform={`translate(${node.x - 90}, ${node.cardY})`}>
+                {/* Real-time Animated Parameter Box */}
+                {(isReached || isCurrentlyPredicting) && (
+                  <g transform={`translate(${node.x - 70}, ${node.cardY})`}>
                     {/* Shadow offset */}
-                    <rect
-                      x="4"
-                      y="4"
-                      width="180"
-                      height="66"
-                      fill="#000000"
-                    />
-                    {/* Card box */}
+                    <rect x="3" y="3" width="140" height="58" fill="#000000" />
+                    {/* Card main box */}
                     <rect
                       x="0"
                       y="0"
-                      width="180"
-                      height="66"
-                      fill={isHovered ? node.color : '#FFFFFF'}
-                      stroke="#000000"
-                      strokeWidth="2.5"
+                      width="140"
+                      height="58"
+                      fill={isHovered ? node.color : isCurrentlyPredicting ? '#FFFDF0' : '#FFFFFF'}
+                      stroke={isCurrentlyPredicting ? node.color : '#000000'}
+                      strokeWidth={isCurrentlyPredicting ? '3' : '2'}
                       style={{ transition: 'fill 0.15s ease' }}
                     />
-                    {/* Label */}
+                    {/* Parameter Tag */}
                     <text
-                      x="10"
-                      y="20"
+                      x="8"
+                      y="17"
                       fontFamily="JetBrains Mono"
-                      fontSize="9"
+                      fontSize="8.5"
                       fontWeight="800"
                       fill="#000000"
-                      letterSpacing="0.05em"
+                      letterSpacing="0.04em"
                     >
-                      0{index + 1} // {node.label}
+                      0{stepNum} // {node.label}
                     </text>
-                    {/* Value */}
+                    {/* Real-time Scrambled / Final Parameter Text */}
                     <text
-                      x="10"
-                      y="44"
+                      x="8"
+                      y="39"
                       fontFamily="Inter"
-                      fontSize="12"
+                      fontSize="11"
                       fontWeight="800"
-                      fill="#000000"
+                      fill={isCurrentlyPredicting ? '#000000' : '#111111'}
                     >
-                      {node.value.length > 22 ? node.value.substring(0, 20) + '...' : node.value}
+                      {displayValue.length > 17 ? displayValue.substring(0, 15) + '...' : displayValue}
                     </text>
                   </g>
                 )}

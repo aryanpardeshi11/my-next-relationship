@@ -66,11 +66,11 @@ h1, h2, h3, h4, h5, h6 {
 .app-header {
   border-bottom: 3px solid var(--border-color);
   background: var(--pop-yellow);
-  padding: 1.25rem 2rem;
+  padding: 0.75rem 1.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 4px 0px var(--border-color);
+  box-shadow: 0 3px 0px var(--border-color);
 }
 
 .logo-button {
@@ -80,7 +80,7 @@ h1, h2, h3, h4, h5, h6 {
   text-align: left;
   display: flex;
   flex-direction: column;
-  padding: 0.2rem 0.5rem;
+  padding: 0.1rem 0.3rem;
   transition: transform 0.1s ease;
 }
 
@@ -89,24 +89,24 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .app-title {
-  font-size: 1.4rem;
+  font-size: 1.25rem;
   font-weight: 900;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: #000000;
   background: #FFFFFF;
-  padding: 0.2rem 0.6rem;
+  padding: 0.15rem 0.5rem;
   border: 2.5px solid #000000;
-  box-shadow: 3px 3px 0px #000000;
+  box-shadow: 2.5px 2.5px 0px #000000;
   display: inline-block;
 }
 
 .app-subtitle {
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 700;
   color: #000000;
-  margin-top: 0.3rem;
+  margin-top: 0.2rem;
 }
 
 .main-content {
@@ -114,10 +114,10 @@ h1, h2, h3, h4, h5, h6 {
   max-width: 1150px;
   width: 100%;
   margin: 0 auto;
-  padding: 2.5rem 1.5rem;
+  padding: 1rem 1.25rem;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1rem;
 }
 
 .footer {
