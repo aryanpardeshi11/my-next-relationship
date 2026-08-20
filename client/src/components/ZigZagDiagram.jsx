@@ -1,97 +1,82 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 export default function ZigZagDiagram({ matchData, matchSource }) {
-  const [activeNode, setActiveNode] = useState(null);
+  const [visibleCount, setVisibleCount] = useState(1);
+  const [hoveredNode, setHoveredNode] = useState(null);
 
   if (!matchData) return null;
 
   const colors = [
-    '#FFE600', // Yellow
-    '#FF52A2', // Pink
-    '#00F0FF', // Cyan
-    '#00E699', // Green
-    '#FF7E36', // Orange
-    '#8B5CF6'  // Purple
+    '#FFE600', // Yellow - Node 1 Age
+    '#FF52A2', // Pink - Node 2 Gender
+    '#00F0FF', // Cyan - Node 3 Height
+    '#00E699', // Green - Node 4 Job
+    '#FF7E36', // Orange - Node 5 Personality
+    '#8B5CF6'  // Purple - Node 6 Hobby
   ];
 
+  // Inverted W (M-shape) coordinate layout
   const nodes = [
-    {
-      id: 'age',
-      label: 'AGE',
-      value: matchData.age,
-      x: 120,
-      y: 90,
-      align: 'right',
-      color: colors[0]
-    },
-    {
-      id: 'gender',
-      label: 'GENDER',
-      value: matchData.gender,
-      x: 420,
-      y: 70,
-      align: 'left',
-      color: colors[1]
-    },
-    {
-      id: 'height',
-      label: 'HEIGHT',
-      value: matchData.height,
-      x: 180,
-      y: 220,
-      align: 'right',
-      color: colors[2]
-    },
-    {
-      id: 'job',
-      label: 'OCCUPATION',
-      value: matchData.job,
-      x: 680,
-      y: 190,
-      align: 'left',
-      color: colors[3]
-    },
-    {
-      id: 'personality',
-      label: 'PERSONALITY',
-      value: matchData.personality,
-      x: 280,
-      y: 360,
-      align: 'right',
-      color: colors[4]
-    },
-    {
-      id: 'hobby',
-      label: 'PRIMARY HOBBY',
-      value: matchData.hobby,
-      x: 740,
-      y: 380,
-      align: 'left',
-      color: colors[5]
-    }
+    { id: 'age', label: 'AGE', value: matchData.age, x: 90, y: 310, cardY: 340, color: colors[0] },
+    { id: 'gender', label: 'GENDER', value: matchData.gender, x: 240, y: 110, cardY: 25, color: colors[1] },
+    { id: 'height', label: 'HEIGHT', value: matchData.height, x: 390, y: 310, cardY: 340, color: colors[2] },
+    { id: 'job', label: 'OCCUPATION', value: matchData.job, x: 540, y: 110, cardY: 25, color: colors[3] },
+    { id: 'personality', label: 'PERSONALITY', value: matchData.personality, x: 690, y: 310, cardY: 340, color: colors[4] },
+    { id: 'hobby', label: 'PRIMARY HOBBY', value: matchData.hobby, x: 840, y: 110, cardY: 25, color: colors[5] }
   ];
 
-  // Construct points string for SVG polyline (sharp zig-zag path)
-  const polylinePoints = nodes.map(n => `${n.x},${n.y}`).join(' ');
+  // Animate node prediction sequentially 1 -> 2 -> 3 -> 4 -> 5 -> 6
+  useEffect(() => {
+    setVisibleCount(1);
+    const interval = setInterval(() => {
+      setVisibleCount((prev) => {
+        if (prev < nodes.length) {
+          return prev + 1;
+        } else {
+          clearInterval(interval);
+          return prev;
+        }
+      });
+    }, 650);
+
+    return () => clearInterval(interval);
+  }, [matchData]);
+
+  const isComplete = visibleCount === nodes.length;
+  const animatedNodes = nodes.slice(0, visibleCount);
+  const activePolylinePoints = animatedNodes.map(n => `${n.x},${n.y}`).join(' ');
+  const fullPolylinePoints = nodes.map(n => `${n.x},${n.y}`).join(' ');
 
   return (
     <div className="diagram-container">
       <div className="diagram-header">
         <div>
-          <span className="mono-tag" style={{ color: 'var(--text-muted)' }}>02 // DIAGRAM OUTPUT</span>
-          <h2 style={{ fontSize: '1.3rem', marginTop: '0.2rem' }}>YOUR MATCHED PROFILE PATH</h2>
+          <span className="mono-tag" style={{ color: 'var(--text-muted)' }}>02 // PREDICTIVE MATCH PATH</span>
+          <h2 style={{ fontSize: '1.3rem', marginTop: '0.2rem' }}>INVERTED-W ZIG-ZAG GENERATOR</h2>
         </div>
-        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', flexWrap: 'wrap' }}>
           <span className="match-source-badge">
             SOURCE: {matchSource === 'gemini' ? 'GEMINI API (LIVE)' : 'LOCAL SIMULATOR'}
+          </span>
+          <span
+            className="mono-tag"
+            style={{
+              padding: '0.35rem 0.75rem',
+              border: '2px solid #000',
+              background: isComplete ? 'var(--pop-green)' : 'var(--pop-yellow)',
+              boxShadow: '2px 2px 0px #000',
+              color: '#000'
+            }}
+          >
+            {isComplete ? '✓ MATCH PREDICTED' : `⚡ PREDICTING NODE 0${visibleCount}...`}
           </span>
         </div>
       </div>
 
-      {/* Visual SVG Zig-Zag Path Diagram */}
-      <div style={{ position: 'relative', width: '100%', minHeight: '440px' }}>
+      {/* SVG Inverted W (M-Shape) Animated Path Viewport */}
+      <div style={{ position: 'relative', width: '100%', minHeight: '450px' }}>
         <svg
-          viewBox="0 0 900 460"
+          viewBox="0 0 940 450"
           style={{ width: '100%', height: 'auto', display: 'block', overflow: 'visible' }}
         >
           <defs>
@@ -100,41 +85,85 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
             </pattern>
           </defs>
 
-          {/* Background grid inside SVG */}
-          <rect width="900" height="460" fill="url(#dot-grid)" opacity="0.7" />
+          {/* Background dot grid */}
+          <rect width="940" height="450" fill="url(#dot-grid)" opacity="0.7" />
 
-          {/* Sharp Zig-Zag Polyline Path */}
+          {/* Full path ghost line */}
           <polyline
-            points={polylinePoints}
+            points={fullPolylinePoints}
             fill="none"
-            stroke="#000000"
-            strokeWidth="4"
-            strokeLinecap="square"
-            strokeLinejoin="miter"
+            stroke="#CCCCCC"
+            strokeWidth="3"
+            strokeDasharray="6,6"
           />
 
-          {/* Draw Circular Nodes & Pop Label Cards */}
+          {/* Active Animated Polyline Path (Inverted W / M-shape) */}
+          {animatedNodes.length > 1 && (
+            <polyline
+              points={activePolylinePoints}
+              fill="none"
+              stroke="#000000"
+              strokeWidth="4"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          )}
+
+          {/* Render Nodes & Cards */}
           {nodes.map((node, index) => {
-            const isHovered = activeNode === node.id;
+            const isVisible = index < visibleCount;
+            const isCurrentPredicting = index === visibleCount - 1 && !isComplete;
+            const isHovered = hoveredNode === node.id;
+
             return (
               <g
                 key={node.id}
-                onMouseEnter={() => setActiveNode(node.id)}
-                onMouseLeave={() => setActiveNode(null)}
-                style={{ cursor: 'pointer' }}
+                onMouseEnter={() => isVisible && setHoveredNode(node.id)}
+                onMouseLeave={() => setHoveredNode(null)}
+                style={{
+                  cursor: isVisible ? 'pointer' : 'default',
+                  opacity: isVisible ? 1 : 0.35,
+                  transition: 'opacity 0.3s ease'
+                }}
               >
-                {/* Node outer ring */}
+                {/* Pulsing ring for current predicting node */}
+                {isCurrentPredicting && (
+                  <circle
+                    cx={node.x}
+                    cy={node.y}
+                    r="24"
+                    fill="none"
+                    stroke={node.color}
+                    strokeWidth="3"
+                    opacity="0.8"
+                  >
+                    <animate
+                      attributeName="r"
+                      values="16;28;16"
+                      dur="1s"
+                      repeatCount="indefinite"
+                    />
+                    <animate
+                      attributeName="opacity"
+                      values="1;0.2;1"
+                      dur="1s"
+                      repeatCount="indefinite"
+                    />
+                  </circle>
+                )}
+
+                {/* Outer Node Circle */}
                 <circle
                   cx={node.x}
                   cy={node.y}
                   r={isHovered ? 18 : 14}
-                  fill={node.color}
+                  fill={isVisible ? node.color : '#FFFFFF'}
                   stroke="#000000"
                   strokeWidth="3"
                   style={{ transition: 'all 0.15s ease' }}
                 />
 
-                {/* Node inner step number */}
+                {/* Inner Step Index */}
                 <text
                   x={node.x}
                   y={node.y + 4}
@@ -148,82 +177,57 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
                   {index + 1}
                 </text>
 
-                {/* SVG Card Container */}
-                <g transform={`translate(${node.x + (node.align === 'left' ? 26 : -246)}, ${node.y - 32})`}>
-                  {/* Card Shadow */}
-                  <rect
-                    x="4"
-                    y="4"
-                    width="220"
-                    height="64"
-                    fill="#000000"
-                  />
-                  {/* Card Main Box */}
-                  <rect
-                    x="0"
-                    y="0"
-                    width="220"
-                    height="64"
-                    fill={isHovered ? node.color : "#FFFFFF"}
-                    stroke="#000000"
-                    strokeWidth="2.5"
-                    style={{ transition: 'fill 0.15s ease' }}
-                  />
-
-                  {/* Header Tag */}
-                  <text
-                    x="12"
-                    y="20"
-                    fontFamily="JetBrains Mono"
-                    fontSize="10"
-                    fontWeight="800"
-                    fill="#000000"
-                    letterSpacing="0.06em"
-                  >
-                    0{index + 1} // {node.label}
-                  </text>
-
-                  {/* Dynamic Parameter Value */}
-                  <text
-                    x="12"
-                    y="44"
-                    fontFamily="Inter"
-                    fontSize="13"
-                    fontWeight="800"
-                    fill="#000000"
-                  >
-                    {node.value.length > 25 ? node.value.substring(0, 23) + '...' : node.value}
-                  </text>
-                </g>
+                {/* Dynamic Parameter Card (Only shown once reached by prediction animation) */}
+                {isVisible && (
+                  <g transform={`translate(${node.x - 80}, ${node.cardY})`}>
+                    {/* Shadow offset */}
+                    <rect
+                      x="4"
+                      y="4"
+                      width="160"
+                      height="64"
+                      fill="#000000"
+                    />
+                    {/* Card box */}
+                    <rect
+                      x="0"
+                      y="0"
+                      width="160"
+                      height="64"
+                      fill={isHovered ? node.color : '#FFFFFF'}
+                      stroke="#000000"
+                      strokeWidth="2.5"
+                      style={{ transition: 'fill 0.15s ease' }}
+                    />
+                    {/* Label */}
+                    <text
+                      x="10"
+                      y="20"
+                      fontFamily="JetBrains Mono"
+                      fontSize="9"
+                      fontWeight="800"
+                      fill="#000000"
+                      letterSpacing="0.05em"
+                    >
+                      0{index + 1} // {node.label}
+                    </text>
+                    {/* Value */}
+                    <text
+                      x="10"
+                      y="44"
+                      fontFamily="Inter"
+                      fontSize="12"
+                      fontWeight="800"
+                      fill="#000000"
+                    >
+                      {node.value.length > 18 ? node.value.substring(0, 16) + '...' : node.value}
+                    </text>
+                  </g>
+                )}
               </g>
             );
           })}
         </svg>
-      </div>
-
-      {/* Horizontal Parameters Grid View for Easy Readability */}
-      <div style={{ marginTop: '2rem', borderTop: '3px solid var(--border-color)', paddingTop: '1.5rem' }}>
-        <h3 style={{ fontSize: '1rem', textTransform: 'uppercase', marginBottom: '1rem' }}>
-          03 // MATCH PARAMETERS OVERVIEW
-        </h3>
-        
-        <div className="horizontal-flex-cards">
-          {nodes.map((node, i) => (
-            <div
-              key={node.id}
-              className="param-card"
-              style={{ borderLeft: `6px solid ${node.color}` }}
-            >
-              <div className="param-card-header">
-                <span className="param-num-badge">0{i + 1}</span>
-                <span className="param-title">{node.label}</span>
-              </div>
-              <div className="param-value">
-                {node.value}
-              </div>
-            </div>
-          ))}
-        </div>
       </div>
     </div>
   );
