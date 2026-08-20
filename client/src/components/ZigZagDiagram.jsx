@@ -1,24 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-// Helper function to split text into 2 clean lines so 100% of the sentence is displayed without truncation
-function formatTextLines(text, maxLineLength = 22) {
-  if (!text) return [''];
-  if (text.length <= maxLineLength) return [text];
-
-  const words = text.split(' ');
-  let line1 = '';
-  let line2 = '';
-
-  for (const word of words) {
-    if ((line1 + ' ' + word).trim().length <= maxLineLength) {
-      line1 = (line1 + ' ' + word).trim();
-    } else {
-      line2 = (line2 + ' ' + word).trim();
-    }
-  }
-  return [line1, line2 || ''];
-}
-
 export default function ZigZagDiagram({ matchData, matchSource }) {
   const [activeStep, setActiveStep] = useState(1);
   const [isDone, setIsDone] = useState(false);
@@ -37,31 +18,32 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
     '#FF3366'  // Hot Red - Node 7 Red Flag
   ];
 
-  // Symmetrical 7-Node Wave Layout with ZERO Overlap
-  // Peak Nodes (2, 4, 6) at y=120, Cards placed ABOVE at cardY=25
-  // Valley Nodes (1, 3, 5, 7) at y=240, Cards placed BELOW at cardY=268
+  // Vertically wider 7-Node Wave Layout with ZERO Card-Node Overlap
+  // Peak Nodes (2, 4, 6) at y=80 (Cards placed ABOVE at cardY=12)
+  // Valley Nodes (1, 3, 5, 7) at y=260 (Cards placed BELOW at cardY=285)
+  // Vertical amplitude = 180px for a dramatic, clean symmetrical wave
   const nodes = [
-    { id: 'age', label: 'AGE', value: matchData.age, x: 110, y: 240, cardY: 268, color: colors[0] },
-    { id: 'gender', label: 'GENDER', value: matchData.gender, x: 240, y: 120, cardY: 25, color: colors[1] },
-    { id: 'height', label: 'HEIGHT', value: matchData.height, x: 370, y: 240, cardY: 268, color: colors[2] },
-    { id: 'job', label: 'OCCUPATION', value: matchData.job, x: 500, y: 120, cardY: 25, color: colors[3] },
-    { id: 'personality', label: 'PERSONALITY', value: matchData.personality || matchData.trait, x: 630, y: 240, cardY: 268, color: colors[4] },
-    { id: 'hobby', label: 'PRIMARY HOBBY', value: matchData.hobby, x: 760, y: 120, cardY: 25, color: colors[5] },
-    { id: 'redFlag', label: 'RED FLAG', value: matchData.redFlag || 'Claps when airplane lands', x: 890, y: 240, cardY: 268, color: colors[6] }
+    { id: 'age', label: 'AGE', value: matchData.age, x: 100, y: 260, cardY: 285, color: colors[0] },
+    { id: 'gender', label: 'GENDER', value: matchData.gender, x: 230, y: 80, cardY: 12, color: colors[1] },
+    { id: 'height', label: 'HEIGHT', value: matchData.height, x: 360, y: 260, cardY: 285, color: colors[2] },
+    { id: 'job', label: 'OCCUPATION', value: matchData.job, x: 490, y: 80, cardY: 12, color: colors[3] },
+    { id: 'personality', label: 'PERSONALITY', value: matchData.personality || matchData.trait, x: 620, y: 260, cardY: 285, color: colors[4] },
+    { id: 'hobby', label: 'PRIMARY HOBBY', value: matchData.hobby, x: 750, y: 80, cardY: 12, color: colors[5] },
+    { id: 'redFlag', label: 'RED FLAG', value: matchData.redFlag || 'Claps On Plane Landing', x: 880, y: 260, cardY: 285, color: colors[6] }
   ];
 
-  // Sample pools for real-time text scramble animation during prediction
+  // Concise sample pools for real-time text scramble animation
   const scramblePools = {
     age: ['15 (Mental age 90)', '74 (Tells war stories)', '19 (Refuses adulthood)', '82 (Ex-gymnast)', '47 (Retired early)'],
     gender: ['Genderfluid', 'Agender', 'Non-binary', 'Two-Spirit', 'Demigirl', 'Transgender Woman', 'Cisgender Male'],
     height: ['4\'11" and ¾"', '6\'8"', '5\'2" (5\'7" in boots)', '7\'1"', '6\'1.5"'],
     job: ['Golf Ball Diver', 'Water Slide Tester', 'Professional Line Stander', 'Snake Milker', 'Odor Judge'],
-    personality: ['Fears Tupperware and whispers', 'Ranks soup brands obsessively', 'Only eats yellow foods', 'Communicates in movie quotes'],
-    hobby: ['Competitive bird watching', 'Collecting vintage lint', 'Baking micro-pies', 'Aggressive origami'],
-    redFlag: ['Claps when airplane lands', 'Brings Excel to dates', 'Whispers "nice" when paying', 'No napkins wipes on jeans']
+    personality: ['Fears Tupperware', 'Ranks Soup Brands', 'Only Eats Yellow Food', 'Quotes Old Movies'],
+    hobby: ['Bird Watching', 'Collecting Lint', 'Baking Micro-Pies', 'Aggressive Origami'],
+    redFlag: ['Claps On Plane Landing', 'Brings Date Spreadsheet', 'Whispers "Nice" Paying', 'Wipes On Jeans']
   };
 
-  // Prediction animation timer: 1.2s per node for a clear, readable prediction pace
+  // Prediction step timer: 1.2s per node for clear prediction watching
   useEffect(() => {
     setActiveStep(1);
     setIsDone(false);
@@ -95,7 +77,7 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
     return () => clearInterval(scrambleTimer);
   }, [activeStep, isDone]);
 
-  // Active line points up to current predicting node
+  // Active line points extending up to current predicting node
   const activeNodes = nodes.slice(0, activeStep);
   const activePolylinePoints = activeNodes.map(n => `${n.x},${n.y}`).join(' ');
   const fullPolylinePoints = nodes.map(n => `${n.x},${n.y}`).join(' ');
@@ -103,9 +85,9 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
   return (
     <div className="diagram-container">
       {/* Header section with main title and live status tag */}
-      <div className="diagram-header" style={{ marginBottom: '0.75rem', paddingBottom: '0.5rem' }}>
+      <div className="diagram-header" style={{ marginBottom: '0.5rem', paddingBottom: '0.4rem' }}>
         <div>
-          <h2 style={{ fontSize: '1.4rem', fontWeight: '900', letterSpacing: '0.02em', textTransform: 'uppercase' }}>
+          <h2 style={{ fontSize: '1.35rem', fontWeight: '900', letterSpacing: '0.02em', textTransform: 'uppercase' }}>
             PREDICTIVE MATCH PATH
           </h2>
         </div>
@@ -128,10 +110,10 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
         </div>
       </div>
 
-      {/* SVG Symmetrical 7-Node Wave Path Viewport */}
+      {/* SVG Vertically Wider 7-Node Symmetrical Wave Viewport */}
       <div style={{ position: 'relative', width: '100%' }}>
         <svg
-          viewBox="0 0 1000 360"
+          viewBox="0 0 980 355"
           style={{ width: '100%', height: 'auto', display: 'block', overflow: 'visible' }}
         >
           <defs>
@@ -141,7 +123,7 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
           </defs>
 
           {/* Background dot grid */}
-          <rect width="1000" height="360" fill="url(#dot-grid)" opacity="0.6" />
+          <rect width="980" height="355" fill="url(#dot-grid)" opacity="0.6" />
 
           {/* Ghost dashed path line connecting all 7 nodes */}
           <polyline
@@ -172,16 +154,14 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
             const isHovered = hoveredNode === node.id;
 
             // Determine text value to display
-            let rawText = '';
+            let textValue = '';
             if (isDone || stepNum < activeStep) {
-              rawText = node.value;
+              textValue = node.value;
             } else if (isCurrentlyPredicting) {
-              rawText = scrambleValue || node.value;
+              textValue = scrambleValue || node.value;
             } else {
-              rawText = '...';
+              textValue = '...';
             }
-
-            const lines = formatTextLines(rawText, 22);
 
             return (
               <g
@@ -233,17 +213,17 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
                   {stepNum}
                 </text>
 
-                {/* Real-time Animated Parameter Box (Centered over/under Node with ZERO Overlap) */}
+                {/* Real-time Animated Uniform Parameter Box (Centered over/under Node with ZERO Overlap) */}
                 {(isReached || isCurrentlyPredicting) && (
-                  <g transform={`translate(${node.x - 100}, ${node.cardY})`}>
+                  <g transform={`translate(${node.x - 90}, ${node.cardY})`}>
                     {/* Shadow offset */}
-                    <rect x="4" y="4" width="200" height="68" fill="#000000" />
+                    <rect x="3.5" y="3.5" width="180" height="56" fill="#000000" />
                     {/* Card main box */}
                     <rect
                       x="0"
                       y="0"
-                      width="200"
-                      height="68"
+                      width="180"
+                      height="56"
                       fill={isHovered ? node.color : isCurrentlyPredicting ? '#FFFDF0' : '#FFFFFF'}
                       stroke={isCurrentlyPredicting ? node.color : '#000000'}
                       strokeWidth={isCurrentlyPredicting ? '3.5' : '2.5'}
@@ -252,39 +232,26 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
                     {/* Parameter Tag */}
                     <text
                       x="10"
-                      y="18"
+                      y="17"
                       fontFamily="JetBrains Mono"
-                      fontSize="9"
+                      fontSize="8.5"
                       fontWeight="800"
                       fill="#000000"
-                      letterSpacing="0.05em"
+                      letterSpacing="0.04em"
                     >
                       0{stepNum} // {node.label}
                     </text>
-                    {/* Real-time Parameter Sentence (Line 1) */}
+                    {/* Real-time Parameter Concise Text (Fits uniformly inside box) */}
                     <text
                       x="10"
                       y="38"
                       fontFamily="Inter"
-                      fontSize="11.5"
+                      fontSize={textValue.length > 20 ? '10.5' : '11.5'}
                       fontWeight="800"
                       fill="#000000"
                     >
-                      {lines[0]}
+                      {textValue}
                     </text>
-                    {/* Real-time Parameter Sentence (Line 2 if multi-line) */}
-                    {lines[1] && (
-                      <text
-                        x="10"
-                        y="54"
-                        fontFamily="Inter"
-                        fontSize="11.5"
-                        fontWeight="800"
-                        fill="#000000"
-                      >
-                        {lines[1]}
-                      </text>
-                    )}
                   </g>
                 )}
               </g>

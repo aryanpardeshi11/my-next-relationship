@@ -55,31 +55,31 @@ function generateFallbackMatch(userAge, userGender) {
   ];
 
   const personalities = [
-    'Fears Tupperware and speaks only in passive-aggressive whispers',
-    'Obsessively ranks soup brands and rates your eye contact',
-    'Unapologetically competitive at board games with toddlers',
-    'Maintains eye contact for 4 seconds too long during introductions',
-    'Communicates primarily through vintage movie quotes',
-    'Refuses to acknowledge the existence of Tuesdays'
+    'Fears Tupperware',
+    'Ranks Soup Brands',
+    'Only Eats Yellow Food',
+    'Quotes Old Movies',
+    'Competes With Toddlers',
+    'Rates Your Eye Contact'
   ];
 
   const hobbies = [
-    'Competitive bird watching',
-    'Collecting vintage lint',
-    'Baking micro-pies',
-    'Aggressive origami',
-    'Cataloging stray cats by vocal pitch',
-    'Synchronized lawn mowing'
+    'Bird Watching',
+    'Collecting Vintage Lint',
+    'Baking Micro-Pies',
+    'Aggressive Origami',
+    'Cat Pitch Tuning',
+    'Synchronized Mowing'
   ];
 
   const redFlags = [
-    'Claps when the airplane lands',
-    'Refuses to use napkins, wipes on jeans',
-    'Brings an Excel spreadsheet to dates',
-    'Whispers "nice" every time they pay',
-    'Only listens to podcasts on 2.5x speed',
-    'Asks waiters "Do you know who I am?"',
-    'Uses reply-all on company-wide emails'
+    'Claps On Plane Landing',
+    'Wipes Hands On Jeans',
+    'Brings Date Spreadsheet',
+    'Whispers "Nice" Paying',
+    'Listens 2.5x Speed',
+    'Asks Waiters "Who Am I?"',
+    'Reply-All On Emails'
   ];
 
   const getRandom = (arr) => arr[Math.floor(Math.random() * arr.length)];
@@ -122,14 +122,16 @@ app.post('/api/generate', async (req, res) => {
 User details provided: Age: ${userAge || 'Not specified'}, Gender: ${userGender || 'Not specified'}.
 
 Generate a sarcastic, harmless, lighthearted relationship match parameters object.
+CRITICAL FORMAT RULE: Keep EVERY value CONCISE and SHORT (max 2 to 4 words, max 20 characters) so text fits cleanly inside visual UI cards without overflowing.
+
 Strict Constraints:
-- Age: extreme age strictly between 12-19 OR 45-90. NEVER 20-40. Include a quirky tag (e.g. "14 (Mental age 65)", "78", "16 (Thinks it's 1994)").
-- Height: unusual or highly specific height format (e.g., "4'11 and ¾\"", "6'8\"", "5'3.5\"").
-- Job: real but highly unusual/weird profession (e.g. "Golf Ball Diver", "Water Slide Tester", "Professional Line Stander", "Pet Food Taster").
-- Gender: randomly select from a highly inclusive list of gender identities (e.g. Agender, Genderfluid, Non-binary, Cisgender Male, Transgender Woman, Two-Spirit, Demigirl, etc.).
-- Personality: light, sarcastic, safe (e.g. "Fears Tupperware", "Only eats yellow food").
-- Hobby: light, safe, weird hobby (e.g. "Competitive bird watching", "Collecting elevator buttons").
-- Red Flag: funny, sarcastic, harmless red flag or habit (e.g. "Claps when airplane lands", "Brings Excel spreadsheet to dates").
+- Age: extreme age strictly between 12-19 OR 45-90. Include a short tag (e.g. "14 (Mental age 65)", "78", "16 (Thinks it's 1994)").
+- Height: unusual specific height (e.g., "4'11 and ¾\"", "6'8\"", "5'3.5\"").
+- Job: weird profession in 2-3 words (e.g. "Golf Ball Diver", "Water Slide Tester", "Pet Food Taster").
+- Gender: inclusive gender identity (e.g. Agender, Genderfluid, Non-binary, Cisgender Male, Transgender Woman, Two-Spirit, Demigirl).
+- Personality: short sarcastic trait in 2-3 words (e.g. "Fears Tupperware", "Ranks Soup Brands").
+- Hobby: short weird hobby in 2-3 words (e.g. "Bird Watching", "Collecting Lint", "Micro-Pies").
+- Red Flag: short sarcastic habit in 2-4 words (e.g. "Claps On Plane Landing", "Brings Date Spreadsheet").
 
 Output MUST be strictly valid JSON without markdown tags, backticks, or extra text. Format:
 {
