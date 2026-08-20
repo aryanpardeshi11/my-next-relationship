@@ -110,15 +110,10 @@ export default function App() {
           <div>
             <ZigZagDiagram matchData={matchData} matchSource={matchSource} />
 
-            <div className="actions-row">
-              <button
-                className="stark-button secondary"
-                onClick={handleReset}
-              >
-                ← CHANGE INPUTS
-              </button>
+            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2.5rem' }}>
               <button
                 className="stark-button"
+                style={{ width: '100%', maxWidth: '360px', justifyContent: 'center', fontSize: '1.05rem', padding: '1rem 2rem' }}
                 onClick={() => fetchRelationshipMatch(lastUserInput)}
               >
                 TRY AGAIN ↺
@@ -127,11 +122,6 @@ export default function App() {
           </div>
         )}
       </main>
-
-      {/* Stark Minimalist Footer */}
-      <footer className="footer">
-        <div>MY NEXT RELATIONSHIP // EXPRESS & GEMINI API POWERED // NO EMOJIS // STARK MINIMALISM</div>
-      </footer>
     </div>
   );
 }

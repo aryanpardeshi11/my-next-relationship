@@ -72,6 +72,16 @@ function generateFallbackMatch(userAge, userGender) {
     'Synchronized lawn mowing'
   ];
 
+  const redFlags = [
+    'Claps when the airplane lands',
+    'Refuses to use napkins, wipes on jeans',
+    'Brings an Excel spreadsheet to dates',
+    'Whispers "nice" every time they pay',
+    'Only listens to podcasts on 2.5x speed',
+    'Asks waiters "Do you know who I am?"',
+    'Uses reply-all on company-wide emails'
+  ];
+
   const getRandom = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
   return {
@@ -80,7 +90,8 @@ function generateFallbackMatch(userAge, userGender) {
     job: getRandom(jobs),
     gender: getRandom(genders),
     personality: getRandom(personalities),
-    hobby: getRandom(hobbies)
+    hobby: getRandom(hobbies),
+    redFlag: getRandom(redFlags)
   };
 }
 
@@ -118,6 +129,7 @@ Strict Constraints:
 - Gender: randomly select from a highly inclusive list of gender identities (e.g. Agender, Genderfluid, Non-binary, Cisgender Male, Transgender Woman, Two-Spirit, Demigirl, etc.).
 - Personality: light, sarcastic, safe (e.g. "Fears Tupperware", "Only eats yellow food").
 - Hobby: light, safe, weird hobby (e.g. "Competitive bird watching", "Collecting elevator buttons").
+- Red Flag: funny, sarcastic, harmless red flag or habit (e.g. "Claps when airplane lands", "Brings Excel spreadsheet to dates").
 
 Output MUST be strictly valid JSON without markdown tags, backticks, or extra text. Format:
 {
@@ -126,7 +138,8 @@ Output MUST be strictly valid JSON without markdown tags, backticks, or extra te
   "job": "...",
   "gender": "...",
   "personality": "...",
-  "hobby": "..."
+  "hobby": "...",
+  "redFlag": "..."
 }`;
 
     const response = await ai.models.generateContent({

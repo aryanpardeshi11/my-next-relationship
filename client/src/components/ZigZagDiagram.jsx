@@ -12,20 +12,22 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
     '#00F0FF', // Cyan - Node 3 Height
     '#00E699', // Green - Node 4 Job
     '#FF7E36', // Orange - Node 5 Personality
-    '#8B5CF6'  // Purple - Node 6 Hobby
+    '#8B5CF6', // Purple - Node 6 Hobby
+    '#FF3366'  // Red/Hot Pink - Node 7 Red Flag
   ];
 
-  // Inverted W (M-shape) coordinate layout
+  // Symmetrical 7-node wave layout (Valley -> Peak -> Valley -> Peak -> Valley -> Peak -> Valley)
   const nodes = [
-    { id: 'age', label: 'AGE', value: matchData.age, x: 90, y: 310, cardY: 340, color: colors[0] },
-    { id: 'gender', label: 'GENDER', value: matchData.gender, x: 240, y: 110, cardY: 25, color: colors[1] },
-    { id: 'height', label: 'HEIGHT', value: matchData.height, x: 390, y: 310, cardY: 340, color: colors[2] },
-    { id: 'job', label: 'OCCUPATION', value: matchData.job, x: 540, y: 110, cardY: 25, color: colors[3] },
-    { id: 'personality', label: 'PERSONALITY', value: matchData.personality, x: 690, y: 310, cardY: 340, color: colors[4] },
-    { id: 'hobby', label: 'PRIMARY HOBBY', value: matchData.hobby, x: 840, y: 110, cardY: 25, color: colors[5] }
+    { id: 'age', label: 'AGE', value: matchData.age, x: 85, y: 300, cardY: 330, color: colors[0] },
+    { id: 'gender', label: 'GENDER', value: matchData.gender, x: 215, y: 110, cardY: 20, color: colors[1] },
+    { id: 'height', label: 'HEIGHT', value: matchData.height, x: 345, y: 300, cardY: 330, color: colors[2] },
+    { id: 'job', label: 'OCCUPATION', value: matchData.job, x: 475, y: 110, cardY: 20, color: colors[3] },
+    { id: 'personality', label: 'PERSONALITY', value: matchData.personality || matchData.trait, x: 605, y: 300, cardY: 330, color: colors[4] },
+    { id: 'hobby', label: 'PRIMARY HOBBY', value: matchData.hobby, x: 735, y: 110, cardY: 20, color: colors[5] },
+    { id: 'redFlag', label: 'MAJOR RED FLAG', value: matchData.redFlag || 'Claps when airplane lands', x: 865, y: 300, cardY: 330, color: colors[6] }
   ];
 
-  // Animate node prediction sequentially 1 -> 2 -> 3 -> 4 -> 5 -> 6
+  // Animate node prediction sequentially 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7
   useEffect(() => {
     setVisibleCount(1);
     const interval = setInterval(() => {
@@ -37,7 +39,7 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
           return prev;
         }
       });
-    }, 650);
+    }, 600);
 
     return () => clearInterval(interval);
   }, [matchData]);
@@ -49,10 +51,12 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
 
   return (
     <div className="diagram-container">
-      <div className="diagram-header">
+      {/* Header section with main large title PREDICTIVE MATCH PATH */}
+      <div className="diagram-header" style={{ marginBottom: '2rem' }}>
         <div>
-          <span className="mono-tag" style={{ color: 'var(--text-muted)' }}>02 // PREDICTIVE MATCH PATH</span>
-          <h2 style={{ fontSize: '1.3rem', marginTop: '0.2rem' }}>INVERTED-W ZIG-ZAG GENERATOR</h2>
+          <h2 style={{ fontSize: '1.6rem', fontWeight: '900', letterSpacing: '0.02em' }}>
+            PREDICTIVE MATCH PATH
+          </h2>
         </div>
         <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', flexWrap: 'wrap' }}>
           <span className="match-source-badge">
@@ -62,9 +66,9 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
             className="mono-tag"
             style={{
               padding: '0.35rem 0.75rem',
-              border: '2px solid #000',
+              border: '2.5px solid #000',
               background: isComplete ? 'var(--pop-green)' : 'var(--pop-yellow)',
-              boxShadow: '2px 2px 0px #000',
+              boxShadow: '2.5px 2.5px 0px #000',
               color: '#000'
             }}
           >
@@ -73,10 +77,10 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
         </div>
       </div>
 
-      {/* SVG Inverted W (M-Shape) Animated Path Viewport */}
-      <div style={{ position: 'relative', width: '100%', minHeight: '450px' }}>
+      {/* SVG Symmetrical 7-Node Wave Path Viewport */}
+      <div style={{ position: 'relative', width: '100%', minHeight: '440px' }}>
         <svg
-          viewBox="0 0 940 450"
+          viewBox="0 0 950 440"
           style={{ width: '100%', height: 'auto', display: 'block', overflow: 'visible' }}
         >
           <defs>
@@ -86,7 +90,7 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
           </defs>
 
           {/* Background dot grid */}
-          <rect width="940" height="450" fill="url(#dot-grid)" opacity="0.7" />
+          <rect width="950" height="440" fill="url(#dot-grid)" opacity="0.7" />
 
           {/* Full path ghost line */}
           <polyline
@@ -97,7 +101,7 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
             strokeDasharray="6,6"
           />
 
-          {/* Active Animated Polyline Path (Inverted W / M-shape) */}
+          {/* Active Animated Polyline Path */}
           {animatedNodes.length > 1 && (
             <polyline
               points={activePolylinePoints}
@@ -134,7 +138,7 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
                     r="24"
                     fill="none"
                     stroke={node.color}
-                    strokeWidth="3"
+                    strokeWidth="3.5"
                     opacity="0.8"
                   >
                     <animate
@@ -179,21 +183,21 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
 
                 {/* Dynamic Parameter Card (Only shown once reached by prediction animation) */}
                 {isVisible && (
-                  <g transform={`translate(${node.x - 80}, ${node.cardY})`}>
+                  <g transform={`translate(${node.x - 90}, ${node.cardY})`}>
                     {/* Shadow offset */}
                     <rect
                       x="4"
                       y="4"
-                      width="160"
-                      height="64"
+                      width="180"
+                      height="66"
                       fill="#000000"
                     />
                     {/* Card box */}
                     <rect
                       x="0"
                       y="0"
-                      width="160"
-                      height="64"
+                      width="180"
+                      height="66"
                       fill={isHovered ? node.color : '#FFFFFF'}
                       stroke="#000000"
                       strokeWidth="2.5"
@@ -220,7 +224,7 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
                       fontWeight="800"
                       fill="#000000"
                     >
-                      {node.value.length > 18 ? node.value.substring(0, 16) + '...' : node.value}
+                      {node.value.length > 22 ? node.value.substring(0, 20) + '...' : node.value}
                     </text>
                   </g>
                 )}
