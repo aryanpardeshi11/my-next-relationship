@@ -14,33 +14,33 @@ app.use(express.json());
 // Fallback generator for development or when GEMINI_API_KEY is not set
 function generateFallbackMatch(userAge, userGender) {
   const ages = [
-    '14 (Mental age 72)',
-    '16 (Thinks it is 1985)',
-    '18 (Refuses to grow up)',
-    '47 (Aggressively retired)',
-    '62 (Has 9 cats and 1 parrot)',
-    '78 (Tells stories about the war)',
-    '89 (Ex-circus performer)'
+    '15 (Mental age 90)',
+    '74 (Tells war stories)',
+    '19 (Refuses adulthood)',
+    '47 (Retired early)',
+    '62 (Has 9 cats)',
+    '78 (Thinks it is 1994)',
+    '89 (Ex-circus star)'
   ];
 
   const heights = [
     `4'11" and ¾"`,
     `6'8"`,
     `5'2" (5'7" in boots)`,
-    `6'1" and exactly 2 millimeters`,
-    `4'9" with giant boots`,
+    `6'1" (2mm exact)`,
+    `4'9" big boots`,
     `7'0"`
   ];
 
   const jobs = [
     'Golf Ball Diver',
     'Water Slide Tester',
-    'Professional Line Stander',
-    'Fortune Cookie Writer',
-    'Full-Time Pet Psychic',
+    'Line Stander',
+    'Fortune Writer',
+    'Pet Psychic',
     'Snake Milker',
     'Odor Judge',
-    'Paint Drying Inspector'
+    'Paint Inspector'
   ];
 
   const genders = [
@@ -57,15 +57,15 @@ function generateFallbackMatch(userAge, userGender) {
   const personalities = [
     'Fears Tupperware',
     'Ranks Soup Brands',
-    'Only Eats Yellow Food',
+    'Eats Yellow Food',
     'Quotes Old Movies',
     'Competes With Toddlers',
-    'Rates Your Eye Contact'
+    'Rates Eye Contact'
   ];
 
   const hobbies = [
     'Bird Watching',
-    'Collecting Vintage Lint',
+    'Collecting Lint',
     'Baking Micro-Pies',
     'Aggressive Origami',
     'Cat Pitch Tuning',
@@ -73,12 +73,12 @@ function generateFallbackMatch(userAge, userGender) {
   ];
 
   const redFlags = [
-    'Claps On Plane Landing',
-    'Wipes Hands On Jeans',
-    'Brings Date Spreadsheet',
+    'Claps On Landing',
+    'Wipes On Jeans',
+    'Brings Spreadsheet',
     'Whispers "Nice" Paying',
     'Listens 2.5x Speed',
-    'Asks Waiters "Who Am I?"',
+    'Asks "Who Am I?"',
     'Reply-All On Emails'
   ];
 

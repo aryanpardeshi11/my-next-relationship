@@ -18,29 +18,28 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
     '#FF3366'  // Hot Red - Node 7 Red Flag
   ];
 
-  // Generous Spacey Wave Geometry with ZERO Overlap
-  // Peak Nodes (2, 4, 6) at y=105 (Cards placed ABOVE at cardY=12, y=[12..70])
-  // Valley Nodes (1, 3, 5, 7) at y=265 (Cards placed BELOW at cardY=300, y=[300..358])
-  // 30px-35px clear margin between zig-zag path and every card box
+  // Generous Symmetrical 7-Node Layout with Extra Space Above Top Cards (2, 4, 6)
+  // Top Peak Nodes at y=125, Cards placed ABOVE at cardY=25 (42px clearance margin)
+  // Bottom Valley Nodes at y=275, Cards placed BELOW at cardY=315 (40px clearance margin)
   const nodes = [
-    { id: 'age', label: 'AGE', value: matchData.age, x: 110, y: 265, cardY: 300, color: colors[0] },
-    { id: 'gender', label: 'GENDER', value: matchData.gender, x: 240, y: 105, cardY: 12, color: colors[1] },
-    { id: 'height', label: 'HEIGHT', value: matchData.height, x: 370, y: 265, cardY: 300, color: colors[2] },
-    { id: 'job', label: 'OCCUPATION', value: matchData.job, x: 500, y: 105, cardY: 12, color: colors[3] },
-    { id: 'personality', label: 'PERSONALITY', value: matchData.personality || matchData.trait, x: 630, y: 265, cardY: 300, color: colors[4] },
-    { id: 'hobby', label: 'PRIMARY HOBBY', value: matchData.hobby, x: 760, y: 105, cardY: 12, color: colors[5] },
-    { id: 'redFlag', label: 'RED FLAG', value: matchData.redFlag || 'Claps On Plane Landing', x: 890, y: 265, cardY: 300, color: colors[6] }
+    { id: 'age', label: 'AGE', value: matchData.age, x: 110, y: 275, cardY: 315, color: colors[0] },
+    { id: 'gender', label: 'GENDER', value: matchData.gender, x: 240, y: 125, cardY: 25, color: colors[1] },
+    { id: 'height', label: 'HEIGHT', value: matchData.height, x: 370, y: 275, cardY: 315, color: colors[2] },
+    { id: 'job', label: 'OCCUPATION', value: matchData.job, x: 500, y: 125, cardY: 25, color: colors[3] },
+    { id: 'personality', label: 'PERSONALITY', value: matchData.personality || matchData.trait, x: 630, y: 275, cardY: 315, color: colors[4] },
+    { id: 'hobby', label: 'PRIMARY HOBBY', value: matchData.hobby, x: 760, y: 125, cardY: 25, color: colors[5] },
+    { id: 'redFlag', label: 'RED FLAG', value: matchData.redFlag || 'Claps On Landing', x: 890, y: 275, cardY: 315, color: colors[6] }
   ];
 
-  // Concise sample pools for real-time text scramble animation
+  // Concise sample pools for real-time text scramble animation (all under 18 characters)
   const scramblePools = {
-    age: ['15 (Mental age 90)', '74 (Tells war stories)', '19 (Refuses adulthood)', '82 (Ex-gymnast)', '47 (Retired early)'],
-    gender: ['Genderfluid', 'Agender', 'Non-binary', 'Two-Spirit', 'Demigirl', 'Transgender Woman', 'Cisgender Male'],
+    age: ['15 (Mental age 90)', '74 (Tells war stories)', '19 (Refuses adult)', '82 (Ex-gymnast)', '47 (Retired early)'],
+    gender: ['Genderfluid', 'Agender', 'Non-binary', 'Two-Spirit', 'Demigirl', 'Transgender', 'Cisgender Male'],
     height: ['4\'11" and ¾"', '6\'8"', '5\'2" (5\'7" in boots)', '7\'1"', '6\'1.5"'],
-    job: ['Golf Ball Diver', 'Water Slide Tester', 'Professional Line Stander', 'Snake Milker', 'Odor Judge'],
-    personality: ['Fears Tupperware', 'Ranks Soup Brands', 'Only Eats Yellow Food', 'Quotes Old Movies'],
+    job: ['Golf Ball Diver', 'Water Slide Tester', 'Line Stander', 'Snake Milker', 'Odor Judge'],
+    personality: ['Fears Tupperware', 'Ranks Soup Brands', 'Eats Yellow Food', 'Quotes Old Movies'],
     hobby: ['Bird Watching', 'Collecting Lint', 'Baking Micro-Pies', 'Aggressive Origami'],
-    redFlag: ['Claps On Plane Landing', 'Brings Date Spreadsheet', 'Whispers "Nice" Paying', 'Wipes On Jeans']
+    redFlag: ['Claps On Landing', 'Brings Spreadsheet', 'Whispers "Nice" Paying', 'Wipes On Jeans']
   };
 
   // Prediction step timer: 1.2s per node for clear prediction watching
@@ -85,7 +84,7 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
   return (
     <div className="diagram-container">
       {/* Header section with main title and live status tag */}
-      <div className="diagram-header" style={{ marginBottom: '0.5rem', paddingBottom: '0.4rem' }}>
+      <div className="diagram-header" style={{ marginBottom: '1.25rem', paddingBottom: '0.4rem' }}>
         <div>
           <h2 style={{ fontSize: '1.35rem', fontWeight: '900', letterSpacing: '0.02em', textTransform: 'uppercase' }}>
             PREDICTIVE MATCH PATH
@@ -110,10 +109,10 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
         </div>
       </div>
 
-      {/* SVG Spacey Symmetrical 7-Node Wave Viewport with Clear Margins */}
+      {/* SVG Symmetrical 7-Node Wave Viewport with Extra Top Clearance & Spacey Layout */}
       <div style={{ position: 'relative', width: '100%' }}>
         <svg
-          viewBox="0 0 1000 410"
+          viewBox="0 0 1000 420"
           style={{ width: '100%', height: 'auto', display: 'block', overflow: 'visible' }}
         >
           <defs>
@@ -123,7 +122,7 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
           </defs>
 
           {/* Background dot grid */}
-          <rect width="1000" height="410" fill="url(#dot-grid)" opacity="0.6" />
+          <rect width="1000" height="420" fill="url(#dot-grid)" opacity="0.6" />
 
           {/* Ghost dashed path line connecting all 7 nodes */}
           <polyline
@@ -163,8 +162,8 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
               textValue = '...';
             }
 
-            // Dynamic font sizing based on length to strictly guarantee zero overflow
-            const fontSize = textValue.length > 22 ? '9.5' : textValue.length > 17 ? '10.5' : '11.5';
+            // Ensure string is strictly formatted under 20 chars to guarantee 100% uniform font size
+            const formattedText = textValue.length > 20 ? textValue.substring(0, 18) + '...' : textValue;
 
             return (
               <g
@@ -244,16 +243,16 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
                     >
                       0{stepNum} // {node.label}
                     </text>
-                    {/* Real-time Parameter Concise Text (Fits uniformly inside box with dynamic font sizing) */}
+                    {/* Real-time Parameter Concise Text (100% Uniform 11px font size across ALL cards) */}
                     <text
                       x="12"
                       y="39"
                       fontFamily="Inter"
-                      fontSize={fontSize}
+                      fontSize="11"
                       fontWeight="800"
                       fill="#000000"
                     >
-                      {textValue}
+                      {formattedText}
                     </text>
                   </g>
                 )}
