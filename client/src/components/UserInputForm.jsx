@@ -57,7 +57,7 @@ export default function UserInputForm({ onSubmit, isLoading }) {
             className="stark-button"
             disabled={isLoading}
           >
-            {isLoading ? 'Processing...' : 'Calculate Red Flags →'}
+            {isLoading ? 'Processing...' : 'See Results →'}
           </button>
         </div>
       </form>

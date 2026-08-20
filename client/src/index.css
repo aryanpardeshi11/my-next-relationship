@@ -1,17 +1,22 @@
-/* Stark Minimalist Design System */
+/* Funky Gen-Z Design System */
 :root {
-  --bg-color: #F9F9F9;
-  --grid-line-color: #E2E2E2;
+  --bg-color: #FFFDF5;
+  --grid-line-color: #EAE6D9;
   --text-main: #111111;
-  --text-muted: #666666;
-  --text-light: #888888;
+  --text-muted: #555555;
+  --text-light: #777777;
   --border-color: #111111;
-  --border-subtle: #D0D0D0;
   --card-bg: #FFFFFF;
-  --accent-black: #111111;
-  --accent-white: #FFFFFF;
-  --accent-red-flag: #D93838;
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  
+  /* Pop Funky Gen-Z Colors */
+  --pop-yellow: #FFE600;
+  --pop-pink: #FF52A2;
+  --pop-cyan: #00F0FF;
+  --pop-purple: #8B5CF6;
+  --pop-green: #00E699;
+  --pop-orange: #FF7E36;
+  
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 }
 
@@ -19,7 +24,6 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  border-radius: 0 !important; /* Enforce sharp edges strictly */
 }
 
 html, body {
@@ -28,13 +32,13 @@ html, body {
   font-family: var(--font-sans);
   background-color: var(--bg-color);
   background-image: 
-    linear-gradient(to right, var(--grid-line-color) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--grid-line-color) 1px, transparent 1px);
+    radial-gradient(#D6D1C0 1.5px, transparent 1.5px),
+    radial-gradient(#D6D1C0 1.5px, var(--bg-color) 1.5px);
   background-size: 24px 24px;
+  background-position: 0 0, 12px 12px;
   color: var(--text-main);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 #root {
@@ -45,7 +49,7 @@ html, body {
 
 /* Typography Utilities */
 h1, h2, h3, h4, h5, h6 {
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: -0.02em;
   color: var(--text-main);
 }
@@ -53,36 +57,61 @@ h1, h2, h3, h4, h5, h6 {
 .mono-tag {
   font-family: var(--font-mono);
   font-size: 0.75rem;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
+  font-weight: 700;
   text-transform: uppercase;
 }
 
 /* Layout Containers */
 .app-header {
-  border-bottom: 2px solid var(--border-color);
-  background: var(--bg-color);
-  padding: 1.5rem 2rem;
+  border-bottom: 3px solid var(--border-color);
+  background: var(--pop-yellow);
+  padding: 1.25rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  box-shadow: 0 4px 0px var(--border-color);
+}
+
+.logo-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  padding: 0.2rem 0.5rem;
+  transition: transform 0.1s ease;
+}
+
+.logo-button:hover {
+  transform: scale(1.02);
 }
 
 .app-title {
-  font-size: 1.25rem;
-  font-weight: 800;
-  letter-spacing: 0.1em;
+  font-size: 1.4rem;
+  font-weight: 900;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
+  color: #000000;
+  background: #FFFFFF;
+  padding: 0.2rem 0.6rem;
+  border: 2.5px solid #000000;
+  box-shadow: 3px 3px 0px #000000;
+  display: inline-block;
 }
 
 .app-subtitle {
   font-family: var(--font-mono);
   font-size: 0.75rem;
-  color: var(--text-muted);
+  font-weight: 700;
+  color: #000000;
+  margin-top: 0.3rem;
 }
 
 .main-content {
   flex: 1;
-  max-width: 1100px;
+  max-width: 1150px;
   width: 100%;
   margin: 0 auto;
   padding: 2.5rem 1.5rem;
@@ -92,20 +121,24 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .footer {
-  border-top: 1px solid var(--border-subtle);
+  border-top: 3px solid var(--border-color);
+  background: #FFFFFF;
   padding: 1.25rem 2rem;
   text-align: center;
-  font-size: 0.8rem;
-  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-main);
   font-family: var(--font-mono);
 }
 
-/* Minimalist Form Components */
+/* Funky Neo-Brutalist Cards */
 .stark-card {
   background: var(--card-bg);
-  border: 2px solid var(--border-color);
+  border: 3px solid var(--border-color);
+  box-shadow: 6px 6px 0px var(--border-color);
   padding: 2rem;
   width: 100%;
+  position: relative;
 }
 
 .form-grid {
@@ -128,61 +161,72 @@ h1, h2, h3, h4, h5, h6 {
 
 .form-label {
   font-size: 0.85rem;
-  font-weight: 700;
+  font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
 .stark-input, .stark-select {
   width: 100%;
-  padding: 0.85rem 1rem;
-  font-size: 0.95rem;
+  padding: 0.9rem 1rem;
+  font-size: 1rem;
+  font-weight: 600;
   font-family: var(--font-sans);
-  background: var(--bg-color);
-  border: 1.5px solid var(--border-color);
+  background: #FFFFFF;
+  border: 2.5px solid var(--border-color);
   color: var(--text-main);
   outline: none;
-  transition: background 0.15s ease, border-color 0.15s ease;
-}
-
-.stark-input:focus, .stark-select:focus {
-  background: #FFFFFF;
-  border-color: #000000;
-  outline: 2px solid #000000;
-}
-
-.stark-button {
-  background: var(--accent-black);
-  color: var(--accent-white);
-  border: 2px solid var(--accent-black);
-  padding: 1rem 2rem;
-  font-size: 0.9rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  cursor: pointer;
+  box-shadow: 3px 3px 0px var(--border-color);
   transition: all 0.15s ease;
 }
 
+.stark-input:focus, .stark-select:focus {
+  background: #FFFDF0;
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0px var(--border-color);
+}
+
+/* Funky Gen-Z Buttons */
+.stark-button {
+  background: var(--pop-pink);
+  color: #FFFFFF;
+  border: 3px solid var(--border-color);
+  box-shadow: 4px 4px 0px var(--border-color);
+  padding: 0.9rem 1.8rem;
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .stark-button:hover:not(:disabled) {
-  background: var(--accent-white);
-  color: var(--accent-black);
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px var(--border-color);
+  background: #FF2E8C;
+}
+
+.stark-button:active:not(:disabled) {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px var(--border-color);
 }
 
 .stark-button:disabled {
-  opacity: 0.5;
+  opacity: 0.6;
   cursor: not-allowed;
 }
 
 .stark-button.secondary {
-  background: var(--accent-white);
-  color: var(--accent-black);
-  border: 2px solid var(--accent-black);
+  background: var(--pop-cyan);
+  color: #000000;
 }
 
 .stark-button.secondary:hover:not(:disabled) {
-  background: var(--accent-black);
-  color: var(--accent-white);
+  background: #00D5E6;
 }
 
 /* Loading Indicator */
@@ -191,72 +235,142 @@ h1, h2, h3, h4, h5, h6 {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 4rem 2rem;
-  border: 2px dashed var(--border-color);
-  background: var(--card-bg);
+  padding: 3.5rem 2rem;
+  border: 3px solid var(--border-color);
+  box-shadow: 6px 6px 0px var(--border-color);
+  background: var(--pop-yellow);
   text-align: center;
 }
 
 .loading-text {
   font-family: var(--font-mono);
-  font-size: 1.1rem;
-  font-weight: 700;
+  font-size: 1.2rem;
+  font-weight: 800;
   letter-spacing: 0.05em;
   text-transform: uppercase;
+  background: #FFFFFF;
+  padding: 0.4rem 1rem;
+  border: 2.5px solid #000000;
+  box-shadow: 3px 3px 0px #000000;
   animation: pulse 1.2s infinite alternate;
 }
 
 @keyframes pulse {
-  0% { opacity: 0.3; }
-  100% { opacity: 1; }
+  0% { transform: scale(0.98); }
+  100% { transform: scale(1.02); }
 }
 
 .loading-bar-container {
-  width: 240px;
-  height: 6px;
-  border: 1px solid var(--border-color);
-  margin-top: 1.25rem;
+  width: 260px;
+  height: 12px;
+  border: 2.5px solid var(--border-color);
+  background: #FFFFFF;
+  margin-top: 1.5rem;
   position: relative;
   overflow: hidden;
+  box-shadow: 3px 3px 0px #000000;
 }
 
 .loading-bar {
   height: 100%;
-  background: var(--accent-black);
-  width: 40%;
+  background: var(--pop-pink);
+  width: 45%;
   position: absolute;
   animation: slide 1.2s infinite ease-in-out;
 }
 
 @keyframes slide {
-  0% { left: -40%; }
+  0% { left: -45%; }
   100% { left: 100%; }
 }
 
-/* Diagram Viewport & Visuals */
+/* Horizontal Results & Diagram Layout */
 .diagram-container {
   background: var(--card-bg);
-  border: 2px solid var(--border-color);
+  border: 3px solid var(--border-color);
+  box-shadow: 6px 6px 0px var(--border-color);
   padding: 2rem;
   position: relative;
-  overflow: hidden;
 }
 
 .diagram-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   margin-bottom: 1.5rem;
-  border-bottom: 1.5px solid var(--border-color);
+  border-bottom: 3px solid var(--border-color);
   padding-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 .match-source-badge {
   font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 0.35rem 0.75rem;
+  border: 2px solid var(--border-color);
+  background: var(--pop-cyan);
+  box-shadow: 2px 2px 0px var(--border-color);
+}
+
+/* Horizontal Parameters Table / Grid view */
+.horizontal-scroll-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  padding-bottom: 0.75rem;
+}
+
+.horizontal-flex-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  width: 100%;
+}
+
+.param-card {
+  flex: 1 1 280px;
+  border: 2.5px solid var(--border-color);
+  box-shadow: 4px 4px 0px var(--border-color);
+  padding: 1rem 1.2rem;
+  background: #FFFFFF;
+  transition: transform 0.15s ease;
+}
+
+.param-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 6px 6px 0px var(--border-color);
+}
+
+.param-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.4rem;
+}
+
+.param-num-badge {
+  background: #000000;
+  color: #FFFFFF;
+  font-family: var(--font-mono);
   font-size: 0.7rem;
-  padding: 0.25rem 0.5rem;
-  border: 1px solid var(--border-color);
-  background: #F0F0F0;
+  font-weight: 800;
+  padding: 0.15rem 0.4rem;
+}
+
+.param-title {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.param-value {
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: #000000;
+  word-break: break-word;
 }
 
 /* Controls */
@@ -265,4 +379,5 @@ h1, h2, h3, h4, h5, h6 {
   gap: 1rem;
   justify-content: flex-end;
   margin-top: 1.5rem;
+  flex-wrap: wrap;
 }

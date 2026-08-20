@@ -54,14 +54,14 @@ export default function App() {
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      {/* Stark Minimalist Header */}
+      {/* Header with Clickable Logo */}
       <header className="app-header">
-        <div>
+        <button className="logo-button" onClick={handleReset} title="Return to Home">
           <h1 className="app-title">MY NEXT RELATIONSHIP</h1>
           <div className="app-subtitle">DYNAMIC SARCASTIC MATCHMAKING ENGINE</div>
-        </div>
-        <div className="mono-tag" style={{ border: '1px solid var(--border-color)', padding: '0.4rem 0.8rem', background: '#FFFFFF' }}>
-          VER 1.0 // STARK EDITION
+        </button>
+        <div className="mono-tag" style={{ border: '2px solid var(--border-color)', padding: '0.4rem 0.8rem', background: '#FFFFFF', boxShadow: '2px 2px 0px #000' }}>
+          VER 1.0 // GEN-Z EDITION
         </div>
       </header>
 
@@ -73,12 +73,12 @@ export default function App() {
 
         {isLoading && (
           <div className="loading-state">
-            <div className="loading-text">CALCULATING RED FLAGS...</div>
+            <div className="loading-text">FINDING YOUR MATCH...</div>
             <div className="loading-bar-container">
               <div className="loading-bar"></div>
             </div>
-            <p style={{ marginTop: '1rem', fontSize: '0.8rem', fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>
-              Querying Gemini API & Analyzing extreme age parameters...
+            <p style={{ marginTop: '1rem', fontSize: '0.85rem', fontFamily: 'var(--font-mono)', fontWeight: '700', color: 'var(--text-main)' }}>
+              Querying Gemini API & Analyzing extreme parameters...
             </p>
           </div>
         )}
@@ -94,7 +94,7 @@ export default function App() {
                 className="stark-button"
                 onClick={() => fetchRelationshipMatch(lastUserInput || { age: 24, gender: 'Female' })}
               >
-                RETRY CALCULATION
+                TRY AGAIN ↺
               </button>
               <button
                 className="stark-button secondary"
@@ -121,7 +121,7 @@ export default function App() {
                 className="stark-button"
                 onClick={() => fetchRelationshipMatch(lastUserInput)}
               >
-                RE-CALCULATE MATCH ↻
+                TRY AGAIN ↺
               </button>
             </div>
           </div>

@@ -5,6 +5,15 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
 
   if (!matchData) return null;
 
+  const colors = [
+    '#FFE600', // Yellow
+    '#FF52A2', // Pink
+    '#00F0FF', // Cyan
+    '#00E699', // Green
+    '#FF7E36', // Orange
+    '#8B5CF6'  // Purple
+  ];
+
   const nodes = [
     {
       id: 'age',
@@ -12,7 +21,8 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
       value: matchData.age,
       x: 120,
       y: 90,
-      align: 'right'
+      align: 'right',
+      color: colors[0]
     },
     {
       id: 'gender',
@@ -20,7 +30,8 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
       value: matchData.gender,
       x: 420,
       y: 70,
-      align: 'left'
+      align: 'left',
+      color: colors[1]
     },
     {
       id: 'height',
@@ -28,7 +39,8 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
       value: matchData.height,
       x: 180,
       y: 220,
-      align: 'right'
+      align: 'right',
+      color: colors[2]
     },
     {
       id: 'job',
@@ -36,7 +48,8 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
       value: matchData.job,
       x: 680,
       y: 190,
-      align: 'left'
+      align: 'left',
+      color: colors[3]
     },
     {
       id: 'personality',
@@ -44,7 +57,8 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
       value: matchData.personality,
       x: 280,
       y: 360,
-      align: 'right'
+      align: 'right',
+      color: colors[4]
     },
     {
       id: 'hobby',
@@ -52,7 +66,8 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
       value: matchData.hobby,
       x: 740,
       y: 380,
-      align: 'left'
+      align: 'left',
+      color: colors[5]
     }
   ];
 
@@ -64,7 +79,7 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
       <div className="diagram-header">
         <div>
           <span className="mono-tag" style={{ color: 'var(--text-muted)' }}>02 // DIAGRAM OUTPUT</span>
-          <h2 style={{ fontSize: '1.25rem', marginTop: '0.2rem' }}>YOUR MATCHED PROFILE PATH</h2>
+          <h2 style={{ fontSize: '1.3rem', marginTop: '0.2rem' }}>YOUR MATCHED PROFILE PATH</h2>
         </div>
         <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
           <span className="match-source-badge">
@@ -73,6 +88,7 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
         </div>
       </div>
 
+      {/* Visual SVG Zig-Zag Path Diagram */}
       <div style={{ position: 'relative', width: '100%', minHeight: '440px' }}>
         <svg
           viewBox="0 0 900 460"
@@ -80,33 +96,24 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
         >
           <defs>
             <pattern id="dot-grid" width="20" height="20" patternUnits="userSpaceOnUse">
-              <circle cx="2" cy="2" r="1" fill="#E2E2E2" />
+              <circle cx="3" cy="3" r="1.5" fill="#D6D1C0" />
             </pattern>
           </defs>
 
           {/* Background grid inside SVG */}
-          <rect width="900" height="460" fill="url(#dot-grid)" opacity="0.6" />
+          <rect width="900" height="460" fill="url(#dot-grid)" opacity="0.7" />
 
           {/* Sharp Zig-Zag Polyline Path */}
           <polyline
             points={polylinePoints}
             fill="none"
-            stroke="#111111"
-            strokeWidth="3"
+            stroke="#000000"
+            strokeWidth="4"
             strokeLinecap="square"
             strokeLinejoin="miter"
           />
 
-          {/* Dash line shadow accent for depth */}
-          <polyline
-            points={polylinePoints}
-            fill="none"
-            stroke="#AAAAAA"
-            strokeWidth="1"
-            strokeDasharray="4,4"
-          />
-
-          {/* Draw Circular Nodes & Crisp Labels */}
+          {/* Draw Circular Nodes & Pop Label Cards */}
           {nodes.map((node, index) => {
             const isHovered = activeNode === node.id;
             return (
@@ -120,70 +127,72 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
                 <circle
                   cx={node.x}
                   cy={node.y}
-                  r={isHovered ? 16 : 12}
-                  fill="#FFFFFF"
-                  stroke="#111111"
+                  r={isHovered ? 18 : 14}
+                  fill={node.color}
+                  stroke="#000000"
                   strokeWidth="3"
                   style={{ transition: 'all 0.15s ease' }}
                 />
 
-                {/* Node inner dot */}
-                <circle
-                  cx={node.x}
-                  cy={node.y}
-                  r={isHovered ? 6 : 4}
-                  fill="#111111"
-                />
-
-                {/* Node step number */}
+                {/* Node inner step number */}
                 <text
                   x={node.x}
                   y={node.y + 4}
                   textAnchor="middle"
-                  fill={isHovered ? "#FFFFFF" : "#111111"}
-                  fontSize="9"
+                  fill="#000000"
+                  fontSize="11"
                   fontFamily="JetBrains Mono"
-                  fontWeight="700"
+                  fontWeight="900"
                   pointerEvents="none"
                 >
                   {index + 1}
                 </text>
 
                 {/* SVG Card Container */}
-                <g transform={`translate(${node.x + (node.align === 'left' ? 24 : -240)}, ${node.y - 30})`}>
-                  {/* Card Background */}
+                <g transform={`translate(${node.x + (node.align === 'left' ? 26 : -246)}, ${node.y - 32})`}>
+                  {/* Card Shadow */}
                   <rect
-                    width="216"
-                    height="62"
-                    fill={isHovered ? "#111111" : "#FFFFFF"}
-                    stroke="#111111"
-                    strokeWidth="1.5"
+                    x="4"
+                    y="4"
+                    width="220"
+                    height="64"
+                    fill="#000000"
+                  />
+                  {/* Card Main Box */}
+                  <rect
+                    x="0"
+                    y="0"
+                    width="220"
+                    height="64"
+                    fill={isHovered ? node.color : "#FFFFFF"}
+                    stroke="#000000"
+                    strokeWidth="2.5"
                     style={{ transition: 'fill 0.15s ease' }}
                   />
 
                   {/* Header Tag */}
                   <text
-                    x="10"
-                    y="18"
+                    x="12"
+                    y="20"
                     fontFamily="JetBrains Mono"
-                    fontSize="9"
-                    fontWeight="700"
-                    fill={isHovered ? "#AAAAAA" : "#666666"}
-                    letterSpacing="0.08em"
+                    fontSize="10"
+                    fontWeight="800"
+                    fill="#000000"
+                    letterSpacing="0.06em"
                   >
                     0{index + 1} // {node.label}
                   </text>
 
                   {/* Dynamic Parameter Value */}
                   <text
-                    x="10"
-                    y="42"
+                    x="12"
+                    y="44"
                     fontFamily="Inter"
-                    fontSize="12"
-                    fontWeight="700"
-                    fill={isHovered ? "#FFFFFF" : "#111111"}
+                    fontSize="13"
+                    fontWeight="800"
+                    fill="#000000"
                   >
-                    {node.value.length > 26 ? node.value.substring(0, 24) + '...' : node.value}
+                    {node.value.length > 25 ? node.value.substring(0, 23) + '...' : node.value}
                   </text>
                 </g>
               </g>
@@ -192,22 +201,24 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
         </svg>
       </div>
 
-      {/* Structured Minimalist Summary Table */}
-      <div style={{ marginTop: '2rem', borderTop: '2px solid var(--border-color)', paddingTop: '1.5rem' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem' }}>
+      {/* Horizontal Parameters Grid View for Easy Readability */}
+      <div style={{ marginTop: '2rem', borderTop: '3px solid var(--border-color)', paddingTop: '1.5rem' }}>
+        <h3 style={{ fontSize: '1rem', textTransform: 'uppercase', marginBottom: '1rem' }}>
+          03 // MATCH PARAMETERS OVERVIEW
+        </h3>
+        
+        <div className="horizontal-flex-cards">
           {nodes.map((node, i) => (
             <div
               key={node.id}
-              style={{
-                border: '1px solid var(--border-color)',
-                padding: '0.85rem 1rem',
-                background: '#FFFFFF'
-              }}
+              className="param-card"
+              style={{ borderLeft: `6px solid ${node.color}` }}
             >
-              <div className="mono-tag" style={{ color: 'var(--text-muted)', marginBottom: '0.2rem' }}>
-                PARAM 0{i + 1}: {node.label}
+              <div className="param-card-header">
+                <span className="param-num-badge">0{i + 1}</span>
+                <span className="param-title">{node.label}</span>
               </div>
-              <div style={{ fontWeight: '700', fontSize: '0.95rem' }}>
+              <div className="param-value">
                 {node.value}
               </div>
             </div>
