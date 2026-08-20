@@ -18,18 +18,18 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
     '#FF3366'  // Hot Red - Node 7 Red Flag
   ];
 
-  // Vertically wider 7-Node Wave Layout with ZERO Card-Node Overlap
-  // Peak Nodes (2, 4, 6) at y=80 (Cards placed ABOVE at cardY=12)
-  // Valley Nodes (1, 3, 5, 7) at y=260 (Cards placed BELOW at cardY=285)
-  // Vertical amplitude = 180px for a dramatic, clean symmetrical wave
+  // Generous Spacey Wave Geometry with ZERO Overlap
+  // Peak Nodes (2, 4, 6) at y=105 (Cards placed ABOVE at cardY=12, y=[12..70])
+  // Valley Nodes (1, 3, 5, 7) at y=265 (Cards placed BELOW at cardY=300, y=[300..358])
+  // 30px-35px clear margin between zig-zag path and every card box
   const nodes = [
-    { id: 'age', label: 'AGE', value: matchData.age, x: 100, y: 260, cardY: 285, color: colors[0] },
-    { id: 'gender', label: 'GENDER', value: matchData.gender, x: 230, y: 80, cardY: 12, color: colors[1] },
-    { id: 'height', label: 'HEIGHT', value: matchData.height, x: 360, y: 260, cardY: 285, color: colors[2] },
-    { id: 'job', label: 'OCCUPATION', value: matchData.job, x: 490, y: 80, cardY: 12, color: colors[3] },
-    { id: 'personality', label: 'PERSONALITY', value: matchData.personality || matchData.trait, x: 620, y: 260, cardY: 285, color: colors[4] },
-    { id: 'hobby', label: 'PRIMARY HOBBY', value: matchData.hobby, x: 750, y: 80, cardY: 12, color: colors[5] },
-    { id: 'redFlag', label: 'RED FLAG', value: matchData.redFlag || 'Claps On Plane Landing', x: 880, y: 260, cardY: 285, color: colors[6] }
+    { id: 'age', label: 'AGE', value: matchData.age, x: 110, y: 265, cardY: 300, color: colors[0] },
+    { id: 'gender', label: 'GENDER', value: matchData.gender, x: 240, y: 105, cardY: 12, color: colors[1] },
+    { id: 'height', label: 'HEIGHT', value: matchData.height, x: 370, y: 265, cardY: 300, color: colors[2] },
+    { id: 'job', label: 'OCCUPATION', value: matchData.job, x: 500, y: 105, cardY: 12, color: colors[3] },
+    { id: 'personality', label: 'PERSONALITY', value: matchData.personality || matchData.trait, x: 630, y: 265, cardY: 300, color: colors[4] },
+    { id: 'hobby', label: 'PRIMARY HOBBY', value: matchData.hobby, x: 760, y: 105, cardY: 12, color: colors[5] },
+    { id: 'redFlag', label: 'RED FLAG', value: matchData.redFlag || 'Claps On Plane Landing', x: 890, y: 265, cardY: 300, color: colors[6] }
   ];
 
   // Concise sample pools for real-time text scramble animation
@@ -110,10 +110,10 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
         </div>
       </div>
 
-      {/* SVG Vertically Wider 7-Node Symmetrical Wave Viewport */}
+      {/* SVG Spacey Symmetrical 7-Node Wave Viewport with Clear Margins */}
       <div style={{ position: 'relative', width: '100%' }}>
         <svg
-          viewBox="0 0 980 355"
+          viewBox="0 0 1000 410"
           style={{ width: '100%', height: 'auto', display: 'block', overflow: 'visible' }}
         >
           <defs>
@@ -123,7 +123,7 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
           </defs>
 
           {/* Background dot grid */}
-          <rect width="980" height="355" fill="url(#dot-grid)" opacity="0.6" />
+          <rect width="1000" height="410" fill="url(#dot-grid)" opacity="0.6" />
 
           {/* Ghost dashed path line connecting all 7 nodes */}
           <polyline
@@ -162,6 +162,9 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
             } else {
               textValue = '...';
             }
+
+            // Dynamic font sizing based on length to strictly guarantee zero overflow
+            const fontSize = textValue.length > 22 ? '9.5' : textValue.length > 17 ? '10.5' : '11.5';
 
             return (
               <g
@@ -213,17 +216,17 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
                   {stepNum}
                 </text>
 
-                {/* Real-time Animated Uniform Parameter Box (Centered over/under Node with ZERO Overlap) */}
+                {/* Real-time Animated Uniform Parameter Box (200px wide, centered on Node with ZERO Overlap) */}
                 {(isReached || isCurrentlyPredicting) && (
-                  <g transform={`translate(${node.x - 90}, ${node.cardY})`}>
+                  <g transform={`translate(${node.x - 100}, ${node.cardY})`}>
                     {/* Shadow offset */}
-                    <rect x="3.5" y="3.5" width="180" height="56" fill="#000000" />
+                    <rect x="3.5" y="3.5" width="200" height="58" fill="#000000" />
                     {/* Card main box */}
                     <rect
                       x="0"
                       y="0"
-                      width="180"
-                      height="56"
+                      width="200"
+                      height="58"
                       fill={isHovered ? node.color : isCurrentlyPredicting ? '#FFFDF0' : '#FFFFFF'}
                       stroke={isCurrentlyPredicting ? node.color : '#000000'}
                       strokeWidth={isCurrentlyPredicting ? '3.5' : '2.5'}
@@ -231,22 +234,22 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
                     />
                     {/* Parameter Tag */}
                     <text
-                      x="10"
-                      y="17"
+                      x="12"
+                      y="18"
                       fontFamily="JetBrains Mono"
-                      fontSize="8.5"
+                      fontSize="9"
                       fontWeight="800"
                       fill="#000000"
                       letterSpacing="0.04em"
                     >
                       0{stepNum} // {node.label}
                     </text>
-                    {/* Real-time Parameter Concise Text (Fits uniformly inside box) */}
+                    {/* Real-time Parameter Concise Text (Fits uniformly inside box with dynamic font sizing) */}
                     <text
-                      x="10"
-                      y="38"
+                      x="12"
+                      y="39"
                       fontFamily="Inter"
-                      fontSize={textValue.length > 20 ? '10.5' : '11.5'}
+                      fontSize={fontSize}
                       fontWeight="800"
                       fill="#000000"
                     >
