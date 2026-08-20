@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 export default function UserInputForm({ onSubmit, isLoading }) {
   const [age, setAge] = useState('24');
-  const [gender, setGender] = useState('Non-binary');
+  const [gender, setGender] = useState('Female');
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -38,22 +38,15 @@ export default function UserInputForm({ onSubmit, isLoading }) {
           </div>
 
           <div className="form-group">
-            <label className="form-label" htmlFor="user-gender">Your Gender Identity</label>
+            <label className="form-label" htmlFor="user-gender">Your Gender</label>
             <select
               id="user-gender"
               value={gender}
               onChange={(e) => setGender(e.target.value)}
               className="stark-select"
             >
-              <option value="Agender">Agender</option>
-              <option value="Cisgender Female">Cisgender Female</option>
-              <option value="Cisgender Male">Cisgender Male</option>
-              <option value="Genderfluid">Genderfluid</option>
-              <option value="Non-binary">Non-binary</option>
-              <option value="Transgender Female">Transgender Female</option>
-              <option value="Transgender Male">Transgender Male</option>
-              <option value="Two-Spirit">Two-Spirit</option>
-              <option value="Prefer not to say">Prefer not to say</option>
+              <option value="Female">Female</option>
+              <option value="Male">Male</option>
             </select>
           </div>
         </div>

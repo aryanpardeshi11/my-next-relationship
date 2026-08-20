@@ -92,7 +92,7 @@ export default function App() {
             <div style={{ display: 'flex', gap: '1rem' }}>
               <button
                 className="stark-button"
-                onClick={() => fetchRelationshipMatch(lastUserInput || { age: 24, gender: 'Non-binary' })}
+                onClick={() => fetchRelationshipMatch(lastUserInput || { age: 24, gender: 'Female' })}
               >
                 RETRY CALCULATION
               </button>
