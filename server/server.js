@@ -14,13 +14,13 @@ app.use(express.json());
 // Fallback generator for development or when GEMINI_API_KEY is not set
 function generateFallbackMatch(userAge, userGender) {
   const ages = [
-    '15 (Mental age 90)',
-    '74 (Tells war stories)',
-    '19 (Refuses adulthood)',
-    '47 (Retired early)',
-    '62 (Has 9 cats)',
-    '78 (Thinks it is 1994)',
-    '89 (Ex-circus star)'
+    '14',
+    '16',
+    '18',
+    '47',
+    '62',
+    '78',
+    '89'
   ];
 
   const heights = [
@@ -125,7 +125,7 @@ Generate a sarcastic, harmless, lighthearted relationship match parameters objec
 CRITICAL FORMAT RULE: Keep EVERY value CONCISE and SHORT (max 2 to 4 words, max 20 characters) so text fits cleanly inside visual UI cards without overflowing.
 
 Strict Constraints:
-- Age: extreme age strictly between 12-19 OR 45-90. Include a short tag (e.g. "14 (Mental age 65)", "78", "16 (Thinks it's 1994)").
+- Age: extreme age strictly between 12-19 OR 45-90. NEVER 20-40. Output ONLY the numeric age number (e.g. "14", "78", "16", "89"). Do NOT include any parenthetical comments or text.
 - Height: unusual specific height (e.g., "4'11 and ¾\"", "6'8\"", "5'3.5\"").
 - Job: weird profession in 2-3 words (e.g. "Golf Ball Diver", "Water Slide Tester", "Pet Food Taster").
 - Gender: inclusive gender identity (e.g. Agender, Genderfluid, Non-binary, Cisgender Male, Transgender Woman, Two-Spirit, Demigirl).

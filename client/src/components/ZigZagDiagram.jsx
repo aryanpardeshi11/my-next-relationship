@@ -33,7 +33,7 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
 
   // Concise sample pools for real-time text scramble animation (all under 18 characters)
   const scramblePools = {
-    age: ['15 (Mental age 90)', '74 (Tells war stories)', '19 (Refuses adult)', '82 (Ex-gymnast)', '47 (Retired early)'],
+    age: ['14', '16', '18', '47', '62', '78', '89'],
     gender: ['Genderfluid', 'Agender', 'Non-binary', 'Two-Spirit', 'Demigirl', 'Transgender', 'Cisgender Male'],
     height: ['4\'11" and ¾"', '6\'8"', '5\'2" (5\'7" in boots)', '7\'1"', '6\'1.5"'],
     job: ['Golf Ball Diver', 'Water Slide Tester', 'Line Stander', 'Snake Milker', 'Odor Judge'],
@@ -162,6 +162,11 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
               textValue = '...';
             }
 
+            // Strip parenthetical comments from Age node (e.g. "14 (Mental age 65)" -> "14")
+            if (node.id === 'age' && textValue !== '...') {
+              textValue = textValue.replace(/\s*\(.*?\)/g, '').trim();
+            }
+
             // Ensure string is strictly formatted under 20 chars to guarantee 100% uniform font size
             const formattedText = textValue.length > 20 ? textValue.substring(0, 18) + '...' : textValue;
 
@@ -243,17 +248,41 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
                     >
                       0{stepNum} // {node.label}
                     </text>
-                    {/* Real-time Parameter Concise Text (100% Uniform 11px font size across ALL cards) */}
-                    <text
-                      x="12"
-                      y="39"
-                      fontFamily="Inter"
-                      fontSize="11"
-                      fontWeight="800"
-                      fill="#000000"
-                    >
-                      {formattedText}
-                    </text>
+
+                    {/* Age Parameter with Underline, or Standard Concise Text */}
+                    {node.id === 'age' && formattedText !== '...' ? (
+                      <g>
+                        <text
+                          x="12"
+                          y="39"
+                          fontFamily="Inter"
+                          fontSize="13"
+                          fontWeight="900"
+                          fill="#000000"
+                        >
+                          {formattedText}
+                        </text>
+                        <line
+                          x1="12"
+                          y1="43"
+                          x2={12 + formattedText.length * 10}
+                          y2="43"
+                          stroke="#000000"
+                          strokeWidth="2.5"
+                        />
+                      </g>
+                    ) : (
+                      <text
+                        x="12"
+                        y="39"
+                        fontFamily="Inter"
+                        fontSize="11"
+                        fontWeight="800"
+                        fill="#000000"
+                      >
+                        {formattedText}
+                      </text>
+                    )}
                   </g>
                 )}
               </g>
