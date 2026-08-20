@@ -1,0 +1,15 @@
+{
+  "name": "my-next-relationship",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm run dev --prefix client\" \"npm run dev --prefix server\"",
+    "install:all": "npm install --prefix client && npm install --prefix server",
+    "start:server": "npm start --prefix server",
+    "build:client": "npm run build --prefix client",
+    "deploy:client": "npm run deploy --prefix client"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
