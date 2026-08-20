@@ -58,7 +58,7 @@ export default function App() {
       <header className="app-header">
         <button className="logo-button" onClick={handleReset} title="Return to Home">
           <h1 className="app-title">MY NEXT RELATIONSHIP</h1>
-          <div className="app-subtitle">DYNAMIC SARCASTIC MATCHMAKING ENGINE</div>
+          <div className="app-subtitle">DYNAMIC MATCHMAKING ENGINE</div>
         </button>
         <div className="mono-tag" style={{ border: '2px solid var(--border-color)', padding: '0.4rem 0.8rem', background: '#FFFFFF', boxShadow: '2px 2px 0px #000' }}>
           VER 1.0 // GEN-Z EDITION

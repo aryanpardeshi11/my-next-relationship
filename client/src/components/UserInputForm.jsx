@@ -10,13 +10,13 @@ export default function UserInputForm({ onSubmit, isLoading }) {
   };
 
   return (
-    <div className="stark-card" style={{ maxWidth: '640px', margin: '2rem auto 0 auto' }}>
+    <div className="stark-card" style={{ maxWidth: '640px', margin: '1.25rem auto 0 auto' }}>
       <div style={{ marginBottom: '1.5rem', borderBottom: '2.5px solid var(--border-color)', paddingBottom: '1rem' }}>
         <h2 style={{ fontSize: '1.2rem', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: '900' }}>
           01 // ENTER YOUR DETAILS
         </h2>
         <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '0.25rem', fontWeight: '600' }}>
-          Input your parameters to calculate your statistically improbable relationship match.
+          Input your parameters to calculate your relationship match.
         </p>
       </div>
 
