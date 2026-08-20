@@ -10,7 +10,8 @@ export default function UserInputForm({ onSubmit, isLoading }) {
   };
 
   return (
-    <div className="stark-card" style={{ maxWidth: '640px', margin: '1.25rem auto 0 auto' }}>
+    <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', minHeight: '60vh' }}>
+      <div className="stark-card" style={{ maxWidth: '640px', width: '100%', margin: '0 auto' }}>
       <div style={{ marginBottom: '1.5rem', borderBottom: '2.5px solid var(--border-color)', paddingBottom: '1rem' }}>
         <h2 style={{ fontSize: '1.2rem', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: '900' }}>
           01 // ENTER YOUR DETAILS
@@ -63,5 +64,6 @@ export default function UserInputForm({ onSubmit, isLoading }) {
         </div>
       </form>
     </div>
-  );
+  </div>
+);
 }
