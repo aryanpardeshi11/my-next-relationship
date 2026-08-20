@@ -109,11 +109,11 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
         </div>
       </div>
 
-      {/* SVG Symmetrical 7-Node Wave Viewport with Extra Top Clearance & Spacey Layout */}
-      <div style={{ position: 'relative', width: '100%' }}>
+      {/* SVG Symmetrical 7-Node Wave Viewport with Extra Top Clearance & Responsive Mobile Scroll */}
+      <div style={{ position: 'relative', width: '100%', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
         <svg
           viewBox="0 0 1000 420"
-          style={{ width: '100%', height: 'auto', display: 'block', overflow: 'visible' }}
+          style={{ minWidth: '720px', width: '100%', height: 'auto', display: 'block', overflow: 'visible' }}
         >
           <defs>
             <pattern id="dot-grid" width="18" height="18" patternUnits="userSpaceOnUse">
