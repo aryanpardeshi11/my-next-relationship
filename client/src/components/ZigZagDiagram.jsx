@@ -28,18 +28,55 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
     { id: 'job', label: 'OCCUPATION', value: matchData.job, x: 500, y: 125, cardY: 25, color: colors[3] },
     { id: 'personality', label: 'PERSONALITY', value: matchData.personality || matchData.trait, x: 630, y: 275, cardY: 315, color: colors[4] },
     { id: 'hobby', label: 'PRIMARY HOBBY', value: matchData.hobby, x: 760, y: 125, cardY: 25, color: colors[5] },
-    { id: 'redFlag', label: 'RED FLAG', value: matchData.redFlag || 'Claps On Landing', x: 890, y: 275, cardY: 315, color: colors[6] }
+    { id: 'greenFlag', label: 'GREEN FLAG', value: matchData.greenFlag || matchData.redFlag || 'Claps On Landing', x: 890, y: 275, cardY: 315, color: colors[6] }
   ];
 
-  // Concise sample pools for real-time text scramble animation (all under 18 characters)
+  // 25+ Concise sample pools for real-time text scramble animation (all under 18 characters)
   const scramblePools = {
-    age: ['14', '16', '18', '47', '62', '78', '89'],
-    gender: ['Genderfluid', 'Agender', 'Non-binary', 'Two-Spirit', 'Demigirl', 'Transgender', 'Cisgender Male'],
-    height: ['4\'11" and ¾"', '6\'8"', '5\'2" (5\'7" in boots)', '7\'1"', '6\'1.5"'],
-    job: ['Golf Ball Diver', 'Water Slide Tester', 'Line Stander', 'Snake Milker', 'Odor Judge'],
-    personality: ['Fears Tupperware', 'Ranks Soup Brands', 'Eats Yellow Food', 'Quotes Old Movies'],
-    hobby: ['Bird Watching', 'Collecting Lint', 'Baking Micro-Pies', 'Aggressive Origami'],
-    redFlag: ['Claps On Landing', 'Brings Spreadsheet', 'Whispers "Nice" Paying', 'Wipes On Jeans']
+    age: [
+      '12', '13', '14', '15', '16', '17', '18', '19', '45', '47',
+      '51', '54', '58', '62', '65', '69', '72', '75', '78', '81',
+      '84', '87', '89', '91', '94'
+    ],
+    gender: [
+      'Genderfluid', 'Agender', 'Non-binary', 'Cisgender Male', 'Transgender Woman',
+      'Two-Spirit', 'Demigirl', 'Pangender'
+    ],
+    height: [
+      '4\'11" and ¾"', '6\'8"', '5\'2" (5\'7" in boots)', '6\'1" (2mm exact)', '4\'9" big boots',
+      '7\'0"', '5\'0" on tiptoes', '6\'5" and a half', '4\'10" exactly', '6\'11" giraffe',
+      '5\'1" in heels', '6\'7" slouching', '4\'8" with hat', '6\'9" (nice)', '5\'3.5"',
+      '6\'2" in socks', '4\'7" power stance', '7\'2" door-hitter', '5\'4" posture', '6\'6" giant',
+      '4\'9.5"', '6\'10" benched', '5\'5" towering', '6\'4" stretched', '7\'3" ceiling'
+    ],
+    job: [
+      'Golf Ball Diver', 'Water Slide Tester', 'Line Stander', 'Fortune Writer', 'Pet Psychic',
+      'Snake Milker', 'Odor Judge', 'Paint Inspector', 'Lego Separator', 'Dice Tester',
+      'Armpit Smeller', 'Chicken Sexer', 'Queue Waiter', 'Furniture Tester', 'Pro Sleeper',
+      'Cat Caddy', 'Meme Historian', 'Bed Tester', 'Duck Herder', 'Dog Food Taster',
+      'Worm Picker', 'Iceberg Mover', 'Towel Sniffer', 'Ant Stunt Double', 'Volcano Monitor'
+    ],
+    personality: [
+      'Fears Tupperware', 'Ranks Soup Brands', 'Eats Yellow Food', 'Quotes Old Movies', 'Competes W/ Toddlers',
+      'Rates Eye Contact', 'Whispers To Plants', 'Refuses Tuesdays', 'Explains Memes', 'Counts Elevator Buttons',
+      'Judges Cereal', 'Fears Toasters', 'Aggressively Polite', 'Argues With Siri', 'Ranks Spots',
+      'Obsessed W/ Lint', 'Mirror Monologues', 'Rates Tap Water', 'Fears Bubble Wrap', 'Aggressively Chill',
+      'Sings Microwave', 'Corrects Grammar', 'Monopolizes Trivia', 'Judges Handshakes', 'Fears Slow Wi-Fi'
+    ],
+    hobby: [
+      'Bird Watching', 'Collecting Lint', 'Baking Micro-Pies', 'Aggressive Origami', 'Cat Pitch Tuning',
+      'Synchronized Mowing', 'Sock Sorting', 'Cloud Rating', 'Extreme Ironing', 'Pencil Sharpening',
+      'Spoon Balancing', 'Elevator Riding', 'Leaf Collecting', 'Brick Stacking', 'Popping Bubbles',
+      'Gnome Painting', 'Dust Bun Hunting', 'Tunnel Yodeling', 'Pebble Cataloging', 'Ant Race Betting',
+      'Washing Marbles', 'Staring Contests', 'Noodle Sculpting', 'Button Counting', 'Tree Hugging'
+    ],
+    greenFlag: [
+      'Claps On Landing', 'Wipes On Jeans', 'Brings Spreadsheet', 'Whispers "Nice" Paying', 'Listens 2.5x Speed',
+      'Asks "Who Am I?"', 'Reply-All On Emails', 'Ketchup On Tacos', 'Pizza W/ Fork', 'Leaves 1 Sec Microwave',
+      'Bites Ice Cream', 'Uses Unironic Emojis', 'Says "Irregardless"', 'Socks W/ Sandals', 'Double Dips Chips',
+      'Spoils Endings', 'Leaves Carts Stray', '45 Min Showers', 'Chews Ice Loudly', 'Talks Thru Movies',
+      'Milk Before Cereal', 'Uses Comic Sans', 'Snoozes 12 Alarms', 'Makes Bed At 11PM', 'Claps At Movie End'
+    ]
   };
 
   // Prediction step timer: 1.2s per node for clear prediction watching

@@ -14,72 +14,54 @@ app.use(express.json());
 // Fallback generator for development or when GEMINI_API_KEY is not set
 function generateFallbackMatch(userAge, userGender) {
   const ages = [
-    '14',
-    '16',
-    '18',
-    '47',
-    '62',
-    '78',
-    '89'
+    '12', '13', '14', '15', '16', '17', '18', '19', '45', '47',
+    '51', '54', '58', '62', '65', '69', '72', '75', '78', '81',
+    '84', '87', '89', '91', '94'
   ];
 
   const heights = [
-    `4'11" and ¾"`,
-    `6'8"`,
-    `5'2" (5'7" in boots)`,
-    `6'1" (2mm exact)`,
-    `4'9" big boots`,
-    `7'0"`
+    `4'11" and ¾"`, `6'8"`, `5'2" (5'7" in boots)`, `6'1" (2mm exact)`, `4'9" big boots`,
+    `7'0"`, `5'0" on tiptoes`, `6'5" and a half`, `4'10" exactly`, `6'11" giraffe`,
+    `5'1" in heels`, `6'7" slouching`, `4'8" with hat`, `6'9" (nice)`, `5'3.5"`,
+    `6'2" in socks`, `4'7" power stance`, `7'2" door-hitter`, `5'4" posture`, `6'6" giant`,
+    `4'9.5"`, `6'10" benched`, `5'5" towering`, `6'4" stretched`, `7'3" ceiling`
   ];
 
   const jobs = [
-    'Golf Ball Diver',
-    'Water Slide Tester',
-    'Line Stander',
-    'Fortune Writer',
-    'Pet Psychic',
-    'Snake Milker',
-    'Odor Judge',
-    'Paint Inspector'
+    'Golf Ball Diver', 'Water Slide Tester', 'Line Stander', 'Fortune Writer', 'Pet Psychic',
+    'Snake Milker', 'Odor Judge', 'Paint Inspector', 'Lego Separator', 'Dice Tester',
+    'Armpit Smeller', 'Chicken Sexer', 'Queue Waiter', 'Furniture Tester', 'Pro Sleeper',
+    'Cat Caddy', 'Meme Historian', 'Bed Tester', 'Duck Herder', 'Dog Food Taster',
+    'Worm Picker', 'Iceberg Mover', 'Towel Sniffer', 'Ant Stunt Double', 'Volcano Monitor'
   ];
 
   const genders = [
-    'Genderfluid',
-    'Agender',
-    'Non-binary',
-    'Cisgender Male',
-    'Transgender Woman',
-    'Two-Spirit',
-    'Demigirl',
-    'Pangender'
+    'Genderfluid', 'Agender', 'Non-binary', 'Cisgender Male', 'Transgender Woman',
+    'Two-Spirit', 'Demigirl', 'Pangender'
   ];
 
   const personalities = [
-    'Fears Tupperware',
-    'Ranks Soup Brands',
-    'Eats Yellow Food',
-    'Quotes Old Movies',
-    'Competes With Toddlers',
-    'Rates Eye Contact'
+    'Fears Tupperware', 'Ranks Soup Brands', 'Eats Yellow Food', 'Quotes Old Movies', 'Competes W/ Toddlers',
+    'Rates Eye Contact', 'Whispers To Plants', 'Refuses Tuesdays', 'Explains Memes', 'Counts Elevator Buttons',
+    'Judges Cereal', 'Fears Toasters', 'Aggressively Polite', 'Argues With Siri', 'Ranks Spots',
+    'Obsessed W/ Lint', 'Mirror Monologues', 'Rates Tap Water', 'Fears Bubble Wrap', 'Aggressively Chill',
+    'Sings Microwave', 'Corrects Grammar', 'Monopolizes Trivia', 'Judges Handshakes', 'Fears Slow Wi-Fi'
   ];
 
   const hobbies = [
-    'Bird Watching',
-    'Collecting Lint',
-    'Baking Micro-Pies',
-    'Aggressive Origami',
-    'Cat Pitch Tuning',
-    'Synchronized Mowing'
+    'Bird Watching', 'Collecting Lint', 'Baking Micro-Pies', 'Aggressive Origami', 'Cat Pitch Tuning',
+    'Synchronized Mowing', 'Sock Sorting', 'Cloud Rating', 'Extreme Ironing', 'Pencil Sharpening',
+    'Spoon Balancing', 'Elevator Riding', 'Leaf Collecting', 'Brick Stacking', 'Popping Bubbles',
+    'Gnome Painting', 'Dust Bun Hunting', 'Tunnel Yodeling', 'Pebble Cataloging', 'Ant Race Betting',
+    'Washing Marbles', 'Staring Contests', 'Noodle Sculpting', 'Button Counting', 'Tree Hugging'
   ];
 
-  const redFlags = [
-    'Claps On Landing',
-    'Wipes On Jeans',
-    'Brings Spreadsheet',
-    'Whispers "Nice" Paying',
-    'Listens 2.5x Speed',
-    'Asks "Who Am I?"',
-    'Reply-All On Emails'
+  const greenFlags = [
+    'Claps On Landing', 'Wipes On Jeans', 'Brings Spreadsheet', 'Whispers "Nice" Paying', 'Listens 2.5x Speed',
+    'Asks "Who Am I?"', 'Reply-All On Emails', 'Ketchup On Tacos', 'Pizza W/ Fork', 'Leaves 1 Sec Microwave',
+    'Bites Ice Cream', 'Uses Unironic Emojis', 'Says "Irregardless"', 'Socks W/ Sandals', 'Double Dips Chips',
+    'Spoils Endings', 'Leaves Carts Stray', '45 Min Showers', 'Chews Ice Loudly', 'Talks Thru Movies',
+    'Milk Before Cereal', 'Uses Comic Sans', 'Snoozes 12 Alarms', 'Makes Bed At 11PM', 'Claps At Movie End'
   ];
 
   const getRandom = (arr) => arr[Math.floor(Math.random() * arr.length)];
@@ -91,7 +73,7 @@ function generateFallbackMatch(userAge, userGender) {
     gender: getRandom(genders),
     personality: getRandom(personalities),
     hobby: getRandom(hobbies),
-    redFlag: getRandom(redFlags)
+    greenFlag: getRandom(greenFlags)
   };
 }
 
@@ -131,7 +113,7 @@ Strict Constraints:
 - Gender: inclusive gender identity (e.g. Agender, Genderfluid, Non-binary, Cisgender Male, Transgender Woman, Two-Spirit, Demigirl).
 - Personality: short sarcastic trait in 2-3 words (e.g. "Fears Tupperware", "Ranks Soup Brands").
 - Hobby: short weird hobby in 2-3 words (e.g. "Bird Watching", "Collecting Lint", "Micro-Pies").
-- Red Flag: short sarcastic habit in 2-4 words (e.g. "Claps On Plane Landing", "Brings Date Spreadsheet").
+- Green Flag: short sarcastic red-flag habit labeled as green flag in satire (e.g. "Claps On Plane Landing", "Brings Date Spreadsheet").
 
 Output MUST be strictly valid JSON without markdown tags, backticks, or extra text. Format:
 {
@@ -141,7 +123,7 @@ Output MUST be strictly valid JSON without markdown tags, backticks, or extra te
   "gender": "...",
   "personality": "...",
   "hobby": "...",
-  "redFlag": "..."
+  "greenFlag": "..."
 }`;
 
     const response = await ai.models.generateContent({
