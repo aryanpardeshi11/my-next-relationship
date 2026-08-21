@@ -465,7 +465,7 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 1.2rem;
   font-weight: 900;
   color: #000000;
-  background: var(--pop-yellow);
+  background: #FFFFFF;
   border: 3px solid #000000;
   box-shadow: 4px 4px 0px #000000;
   padding: 0.95rem 1.6rem;
