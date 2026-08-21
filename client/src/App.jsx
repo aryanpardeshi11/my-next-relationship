@@ -13,11 +13,11 @@ export default function App() {
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
 
   const loadingPhrases = [
-    'Waking up Render server... (~30-50s on cold start)',
+    'Connecting to matchmaking engine...',
     'Consulting cosmic matchmaking algorithms...',
     'Filtering out people who put milk before cereal...',
     'Calculating extreme height and personality quirks...',
-    'Querying Gemini 2.5 Flash neural models...',
+    'Analyzing neural compatibility parameters...',
     'Asking pet psychics for emergency validation...',
     'Almost ready! Preparing statistically improbable match...'
   ];

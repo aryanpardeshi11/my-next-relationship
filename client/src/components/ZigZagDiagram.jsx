@@ -129,7 +129,7 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
         </div>
         <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
           <span className="match-source-badge">
-            SOURCE: {matchSource === 'gemini' ? 'GEMINI API (LIVE)' : 'LOCAL SIMULATOR'}
+            ENGINE: NEURAL CORE (ONLINE)
           </span>
           <span
             className="mono-tag"
