@@ -286,13 +286,6 @@ export default function App() {
           </div>
         )}
       </main>
-
-      <footer className="footer">
-        <div className="footer-tagline">IT'S A PERFECT MATCH 😉</div>
-        <div style={{ marginTop: '0.3rem', fontSize: '0.75rem', opacity: 0.8 }}>
-          MY NEXT RELATIONSHIP © 2026 // DYNAMIC MATCHMAKING ENGINE
-        </div>
-      </footer>
     </div>
   );
 }
