@@ -146,10 +146,16 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
         </div>
       </div>
 
+      {/* Mobile Horizontal Scroll Hint */}
+      <div style={{ textAlign: 'right', marginBottom: '0.4rem', fontSize: '0.75rem', fontFamily: 'var(--font-mono)', fontWeight: '700', color: '#666' }}>
+        ← SWIPE HORIZONTALLY TO VIEW ALL 7 NODES →
+      </div>
+
       {/* SVG Symmetrical 7-Node Wave Viewport with Extra Top Clearance & Responsive Mobile Scroll */}
       <div style={{ position: 'relative', width: '100%', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
         <svg
           viewBox="0 0 1000 420"
+          preserveAspectRatio="xMidYMid meet"
           style={{ minWidth: '720px', width: '100%', height: 'auto', display: 'block', overflow: 'visible' }}
         >
           <defs>

@@ -151,13 +151,23 @@ Output MUST be strictly valid JSON without markdown tags, backticks, or extra te
       source: 'gemini'
     });
   } catch (error) {
-    console.error('[API] Error calling Gemini API:', error.message);
+    const errorMsg = error.message || '';
+    const isRateLimit = error.status === 429 || errorMsg.includes('429') || errorMsg.includes('RESOURCE_EXHAUSTED') || errorMsg.includes('Quota');
+
+    if (isRateLimit) {
+      console.warn('[API] Gemini API Rate Limit (429) hit. Returning sarcastic local fallback match so UI never breaks.');
+    } else {
+      console.error('[API] Error calling Gemini API:', errorMsg);
+    }
+
     const fallbackData = generateFallbackMatch(userAge, userGender);
     return res.json({
       success: true,
       match: fallbackData,
-      source: 'fallback_on_error',
-      error: error.message
+      source: isRateLimit ? 'fallback_rate_limit' : 'fallback_on_error',
+      message: isRateLimit
+        ? 'Gemini API quota reached. Generated seamless sarcastic fallback match.'
+        : 'Generated fallback match due to server error.'
     });
   }
 });

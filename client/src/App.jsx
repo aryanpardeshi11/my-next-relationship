@@ -9,6 +9,41 @@ export default function App() {
   const [error, setError] = useState(null);
   const [lastUserInput, setLastUserInput] = useState(null);
 
+  const [loadingPhraseIndex, setLoadingPhraseIndex] = useState(0);
+  const [elapsedSeconds, setElapsedSeconds] = useState(0);
+
+  const loadingPhrases = [
+    'Waking up Render server... (~30-50s on cold start)',
+    'Consulting cosmic matchmaking algorithms...',
+    'Filtering out people who put milk before cereal...',
+    'Calculating extreme height and personality quirks...',
+    'Querying Gemini 2.5 Flash neural models...',
+    'Asking pet psychics for emergency validation...',
+    'Almost ready! Preparing statistically improbable match...'
+  ];
+
+  // Cold start timer and phrase cycling
+  React.useEffect(() => {
+    if (!isLoading) {
+      setElapsedSeconds(0);
+      setLoadingPhraseIndex(0);
+      return;
+    }
+
+    const timerInterval = setInterval(() => {
+      setElapsedSeconds((prev) => prev + 1);
+    }, 1000);
+
+    const phraseInterval = setInterval(() => {
+      setLoadingPhraseIndex((prev) => (prev + 1) % loadingPhrases.length);
+    }, 2800);
+
+    return () => {
+      clearInterval(timerInterval);
+      clearInterval(phraseInterval);
+    };
+  }, [isLoading]);
+
   // Client-side fallback match generator (guarantees 100% uptime even if backend is 404 / sleeping / offline)
   const generateClientFallback = () => {
     const ages = ['12', '13', '14', '15', '16', '17', '18', '19', '45', '47', '51', '54', '58', '62', '65', '69', '72', '75', '78', '81', '84', '87', '89'];
@@ -107,9 +142,48 @@ export default function App() {
             <div className="loading-bar-container">
               <div className="loading-bar"></div>
             </div>
-            <p style={{ marginTop: '1rem', fontSize: '0.85rem', fontFamily: 'var(--font-mono)', fontWeight: '700', color: 'var(--text-main)' }}>
-              Querying Gemini API & Analyzing extreme parameters...
-            </p>
+
+            <div
+              style={{
+                marginTop: '1.2rem',
+                padding: '0.8rem 1.2rem',
+                background: 'var(--pop-yellow)',
+                border: '2.5px solid #000',
+                boxShadow: '4px 4px 0px #000',
+                display: 'inline-flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: '0.4rem',
+                maxWidth: '480px'
+              }}
+            >
+              <p
+                style={{
+                  fontSize: '0.95rem',
+                  fontFamily: 'var(--font-mono)',
+                  fontWeight: '800',
+                  color: '#000',
+                  margin: 0,
+                  textAlign: 'center'
+                }}
+              >
+                ⚡ {loadingPhrases[loadingPhraseIndex]}
+              </p>
+              <span
+                style={{
+                  fontSize: '0.75rem',
+                  fontFamily: 'var(--font-mono)',
+                  fontWeight: '900',
+                  color: '#555',
+                  background: '#FFF',
+                  padding: '0.2rem 0.6rem',
+                  border: '1.5px solid #000',
+                  boxShadow: '2px 2px 0px #000'
+                }}
+              >
+                ELAPSED TIME: {elapsedSeconds < 10 ? `0${elapsedSeconds}` : elapsedSeconds}s
+              </span>
+            </div>
           </div>
         )}
 
