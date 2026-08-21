@@ -148,8 +148,8 @@ export default function ZigZagDiagram({ matchData, matchSource, onPredictionComp
         </div>
       </div>
 
-      {/* Mobile Horizontal Scroll Hint */}
-      <div style={{ textAlign: 'right', marginBottom: '0.4rem', fontSize: '0.75rem', fontFamily: 'var(--font-mono)', fontWeight: '700', color: '#666' }}>
+      {/* Mobile Horizontal Scroll Hint (Hidden on Desktop, Visible on Mobile) */}
+      <div className="mobile-scroll-hint">
         ← SWIPE HORIZONTALLY TO VIEW ALL 7 NODES →
       </div>
 
