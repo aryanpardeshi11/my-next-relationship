@@ -8,7 +8,7 @@ export default function SocialShareModal({ matchData, matchDescription, onClose 
 
   const displayHost = (typeof window !== 'undefined' && window.location.host && !window.location.host.includes('localhost'))
     ? window.location.host
-    : 'my-next-relationship.vercel.app';
+    : 'my-next-relationship.onrender.com';
 
   const getShareText = () => {
     let text = `My Next Relationship Match\n`;
@@ -21,7 +21,7 @@ export default function SocialShareModal({ matchData, matchDescription, onClose 
     if (matchDescription) {
       text += `\n🔮 Sarcastic Vibe: "${matchDescription}"\n`;
     }
-    const shareUrl = window.location.origin.includes('localhost') ? 'https://my-next-relationship.vercel.app' : window.location.origin;
+    const shareUrl = window.location.origin.includes('localhost') ? 'https://my-next-relationship.onrender.com' : window.location.origin;
     text += `\nFind your match at: ${shareUrl}`;
     return text;
   };

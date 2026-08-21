@@ -1,17 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
-export default function MatchDescription({ matchData, onDescriptionChange }) {
+export default function MatchDescription({ matchData, onDescriptionChange, triggerRef }) {
   const [description, setDescription] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  // Reset state when matchData changes (new prediction)
-  useEffect(() => {
-    setDescription(null);
-    setIsLoading(false);
-    setError(null);
-    if (onDescriptionChange) onDescriptionChange(null);
-  }, [matchData]);
 
   // Client-side sarcastic fallback generator (100% uptime guaranteed)
   const generateClientFallback = (match) => {
@@ -27,7 +18,6 @@ export default function MatchDescription({ matchData, onDescriptionChange }) {
   const handleGenerateDescription = async () => {
     if (!matchData) return;
     setIsLoading(true);
-    setError(null);
 
     const targetBaseUrl = import.meta.env.VITE_API_URL || 'https://my-next-relationship.onrender.com';
     const primaryUrl = targetBaseUrl.replace(/\/$/, '') + '/api/describe';
@@ -73,33 +63,24 @@ export default function MatchDescription({ matchData, onDescriptionChange }) {
     }
   };
 
-  if (!description && !isLoading) {
-    return (
-      <div className="match-description-trigger">
-        <button
-          className="stark-button secondary"
-          onClick={handleGenerateDescription}
-          style={{
-            width: '100%',
-            justifyContent: 'center',
-            fontSize: '0.95rem',
-            padding: '0.95rem 1.4rem',
-            background: 'var(--pop-cyan)',
-            color: '#000'
-          }}
-        >
-          ✨ GENERATE DESCRIPTION
-        </button>
-        <span className="token-saving-hint">
-          ⚡ ON-DEMAND AI // SAVES TOKENS
-        </span>
-      </div>
-    );
+  // Expose trigger function to parent
+  if (triggerRef) {
+    triggerRef.current = handleGenerateDescription;
   }
+
+  // Auto-generate description immediately whenever matchData changes
+  useEffect(() => {
+    if (matchData) {
+      handleGenerateDescription();
+    } else {
+      setDescription(null);
+      if (onDescriptionChange) onDescriptionChange(null);
+    }
+  }, [matchData]);
 
   if (isLoading) {
     return (
-      <div className="match-description-card loading">
+      <div className="match-description-card loading" style={{ marginTop: '1.5rem' }}>
         <div className="loading-spinner-inline"></div>
         <span className="mono-tag" style={{ color: '#000' }}>
           🔮 CRAFTING SARCASTIC IMAGINATION...
@@ -108,8 +89,10 @@ export default function MatchDescription({ matchData, onDescriptionChange }) {
     );
   }
 
+  if (!description) return null;
+
   return (
-    <div className="match-description-card">
+    <div className="match-description-card" style={{ marginTop: '1.5rem' }}>
       <div className="card-header-bar">
         <span className="mono-tag-badge">
           🔮 SARCASTIC MATCH IMAGINATION

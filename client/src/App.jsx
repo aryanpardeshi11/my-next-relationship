@@ -13,6 +13,8 @@ export default function App() {
   const [error, setError] = useState(null);
   const [lastUserInput, setLastUserInput] = useState(null);
 
+  const descTriggerRef = React.useRef(null);
+
   const [loadingPhraseIndex, setLoadingPhraseIndex] = useState(0);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
 
@@ -215,28 +217,32 @@ export default function App() {
         )}
 
         {matchData && !isLoading && (
-          <div>
+          <div className="match-result-workspace">
             <ZigZagDiagram matchData={matchData} matchSource={matchSource} />
 
-            <div className="description-predict-container">
-              <div className="description-wrapper">
-                <MatchDescription matchData={matchData} onDescriptionChange={setMatchDescription} />
-              </div>
-              <div className="predict-button-wrapper" style={{ gap: '0.8rem' }}>
+            <MatchDescription
+              matchData={matchData}
+              onDescriptionChange={setMatchDescription}
+              triggerRef={descTriggerRef}
+            />
+
+            <div className="action-buttons-layout">
+              {/* Row 1: Side-by-side Generate Description and Share Match Snap */}
+              <div className="buttons-row-top">
                 <button
-                  className="stark-button"
-                  style={{ width: '100%', justifyContent: 'center', fontSize: '1.05rem', padding: '0.9rem 1.8rem' }}
-                  onClick={() => fetchRelationshipMatch(lastUserInput)}
+                  className="stark-button secondary"
+                  style={{ width: '100%', justifyContent: 'center', fontSize: '0.92rem', padding: '0.9rem 1rem' }}
+                  onClick={() => descTriggerRef.current && descTriggerRef.current()}
                 >
-                  PREDICT BETTER ↺
+                  ✨ RE-GENERATE DESCRIPTION
                 </button>
                 <button
                   className="stark-button"
                   style={{
                     width: '100%',
                     justifyContent: 'center',
-                    fontSize: '0.95rem',
-                    padding: '0.85rem 1.5rem',
+                    fontSize: '0.92rem',
+                    padding: '0.9rem 1rem',
                     background: '#FFFC00',
                     color: '#000000',
                     border: '2.5px solid #000'
@@ -246,6 +252,14 @@ export default function App() {
                   👻 SHARE MATCH SNAP
                 </button>
               </div>
+
+              {/* Row 2: Big Prominent Predict Better Button Below */}
+              <button
+                className="stark-button predict-better-main-btn"
+                onClick={() => fetchRelationshipMatch(lastUserInput)}
+              >
+                PREDICT BETTER ↺
+              </button>
             </div>
 
             {isShareModalOpen && (
