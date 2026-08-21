@@ -100,8 +100,8 @@ export default function SocialShareModal({ matchData, matchDescription, onClose 
         {/* Hidden Snap Story Card (Formatted as 9:16 Vertical Story Image for Snapchat) */}
         <div style={{ overflow: 'hidden', height: 0, position: 'absolute', top: '-9999px', left: '-9999px' }}>
           <div ref={snapCardRef} className="snap-story-card">
-            <div className="snap-card-badge">MY NEXT RELATIONSHIP // GEN-Z MATCH</div>
-            <h2 className="snap-card-title">MY MATCH SNAP ⚡</h2>
+            <div className="snap-card-badge">DYNAMIC MATCHMAKING ENGINE // VER 1.0</div>
+            <h2 className="snap-card-title">MY NEXT RELATIONSHIP ⚡</h2>
 
             <div className="snap-params-grid">
               <div className="snap-param-item"><strong>AGE:</strong> {matchData.age}</div>
@@ -121,7 +121,7 @@ export default function SocialShareModal({ matchData, matchDescription, onClose 
             )}
 
             <div className="snap-card-footer">
-              ⚡ FIND YOUR MATCH AT MY-NEXT-RELATIONSHIP ⚡
+              🔗 TRY YOUR MATCH AT: <strong>my-next-relationship.onrender.com</strong>
             </div>
           </div>
         </div>
@@ -133,7 +133,7 @@ export default function SocialShareModal({ matchData, matchDescription, onClose 
               📱 SNAPCHAT STORY PREVIEW (9:16 CARD)
             </div>
             <div className="mini-snap-card">
-              <div style={{ fontWeight: '900', fontSize: '1rem', color: '#000', marginBottom: '0.4rem' }}>MY MATCH SNAP ⚡</div>
+              <div style={{ fontWeight: '900', fontSize: '1rem', color: '#000', marginBottom: '0.4rem' }}>MY NEXT RELATIONSHIP ⚡</div>
               <div style={{ fontSize: '0.82rem', lineHeight: '1.4', fontWeight: '700' }}>
                 👤 {matchData.age} y/o {matchData.gender} ({matchData.height})<br />
                 💼 {matchData.job}<br />
@@ -145,6 +145,9 @@ export default function SocialShareModal({ matchData, matchDescription, onClose 
                   "{matchDescription}"
                 </div>
               )}
+              <div style={{ marginTop: '0.5rem', background: '#FFFFFF', border: '1.5px solid #000', padding: '0.35rem 0.5rem', fontSize: '0.72rem', fontWeight: '800', fontFamily: 'var(--font-mono)', color: '#000', textAlign: 'center' }}>
+                🔗 TRY IT AT: my-next-relationship.onrender.com
+              </div>
             </div>
           </div>
 

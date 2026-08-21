@@ -88,7 +88,7 @@ export default function MatchDescription({ matchData, onDescriptionChange }) {
             color: '#000'
           }}
         >
-          ✨ GENERATE SARCASTIC VIBE
+          ✨ GENERATE DESCRIPTION
         </button>
         <span className="token-saving-hint">
           ⚡ ON-DEMAND AI // SAVES TOKENS
