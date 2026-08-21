@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import UserInputForm from './components/UserInputForm.jsx';
 import ZigZagDiagram from './components/ZigZagDiagram.jsx';
+import MatchDescription from './components/MatchDescription.jsx';
+import SocialShareModal from './components/SocialShareModal.jsx';
 
 export default function App() {
   const [matchData, setMatchData] = useState(null);
   const [matchSource, setMatchSource] = useState(null);
+  const [matchDescription, setMatchDescription] = useState(null);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [lastUserInput, setLastUserInput] = useState(null);
@@ -214,15 +218,43 @@ export default function App() {
           <div>
             <ZigZagDiagram matchData={matchData} matchSource={matchSource} />
 
-            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2.5rem' }}>
-              <button
-                className="stark-button"
-                style={{ width: '100%', maxWidth: '360px', justifyContent: 'center', fontSize: '1.05rem', padding: '1rem 2rem' }}
-                onClick={() => fetchRelationshipMatch(lastUserInput)}
-              >
-                PREDICT BETTER ↺
-              </button>
+            <div className="description-predict-container">
+              <div className="description-wrapper">
+                <MatchDescription matchData={matchData} onDescriptionChange={setMatchDescription} />
+              </div>
+              <div className="predict-button-wrapper" style={{ gap: '0.8rem' }}>
+                <button
+                  className="stark-button"
+                  style={{ width: '100%', justifyContent: 'center', fontSize: '1.05rem', padding: '0.9rem 1.8rem' }}
+                  onClick={() => fetchRelationshipMatch(lastUserInput)}
+                >
+                  PREDICT BETTER ↺
+                </button>
+                <button
+                  className="stark-button"
+                  style={{
+                    width: '100%',
+                    justifyContent: 'center',
+                    fontSize: '0.95rem',
+                    padding: '0.85rem 1.5rem',
+                    background: '#FFFC00',
+                    color: '#000000',
+                    border: '2.5px solid #000'
+                  }}
+                  onClick={() => setIsShareModalOpen(true)}
+                >
+                  👻 SHARE MATCH SNAP
+                </button>
+              </div>
             </div>
+
+            {isShareModalOpen && (
+              <SocialShareModal
+                matchData={matchData}
+                matchDescription={matchDescription}
+                onClose={() => setIsShareModalOpen(false)}
+              />
+            )}
           </div>
         )}
       </main>

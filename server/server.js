@@ -77,8 +77,71 @@ function generateFallbackMatch(userAge, userGender) {
   };
 }
 
+function generateFallbackDescription(match) {
+  const { age, height, job, gender, personality, hobby, greenFlag } = match || {};
+  const scenarios = [
+    `Your future with this ${height} ${gender || 'partner'} (${age} y/o) who works as a ${job || 'freelancer'} revolves around their core trait: "${personality || 'Fears Tupperware'}". Expect romantic dates where they compel you into ${hobby || 'Sock Sorting'} while treating "${greenFlag || 'Claps On Landing'}" as their non-negotiable love language.`,
+    `Imagine coming home to a ${age}-year-old ${job || 'Line Stander'} (${height}) whose entire vibe is "${personality || 'Rates Tap Water'}". They will drag you into aggressive sessions of ${hobby || 'Cloud Rating'} and unironically consider "${greenFlag || 'Brings Spreadsheet'}" to be peak emotional intimacy.`,
+    `Dating this ${height} ${job || 'Pet Psychic'} means accepting that "${personality || 'Refuses Tuesdays'}" isn't just a quirk—it's a lifestyle. Between emergency sessions of ${hobby || 'Baking Micro-Pies'}, they will look you in the eye and declare "${greenFlag || 'Whispers Nice Paying'}" as their wedding vow.`
+  ];
+  return scenarios[Math.floor(Math.random() * scenarios.length)];
+}
+
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', service: 'My Next Relationship API' });
+});
+
+app.post('/api/describe', async (req, res) => {
+  const { match } = req.body || {};
+  if (!match) {
+    return res.status(400).json({ success: false, error: 'Match data is required' });
+  }
+
+  const apiKey = process.env.GEMINI_API_KEY;
+
+  if (!apiKey || apiKey.trim() === '' || apiKey.includes('your_gemini_api_key')) {
+    console.log('[API] GEMINI_API_KEY not configured for description. Using intelligent local sarcastic fallback.');
+    return res.json({
+      success: true,
+      description: generateFallbackDescription(match),
+      source: 'fallback'
+    });
+  }
+
+  try {
+    const ai = new GoogleGenAI({ apiKey });
+    const prompt = `You are a sarcastic, comedic matchmaker AI for a satire app.
+Given this predicted relationship match profile:
+- Age: ${match.age}
+- Height: ${match.height}
+- Job: ${match.job}
+- Gender: ${match.gender}
+- Personality Trait: ${match.personality || match.trait}
+- Primary Hobby: ${match.hobby}
+- Green Flag: ${match.greenFlag || match.redFlag}
+
+Write a short (2 to 3 sentences), highly exaggerated, witty, sarcastic imagination/scenario of what dating or living with this person would actually be like.
+Strictly return ONLY the plain text description (max 280 characters). Do NOT include markdown tags, quotes, or JSON.`;
+
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: prompt
+    });
+
+    const description = response.text ? response.text.trim() : generateFallbackDescription(match);
+    return res.json({
+      success: true,
+      description,
+      source: 'gemini'
+    });
+  } catch (error) {
+    console.error('[API] Error generating description via Gemini API:', error.message || error);
+    return res.json({
+      success: true,
+      description: generateFallbackDescription(match),
+      source: 'fallback_on_error'
+    });
+  }
 });
 
 app.post('/api/generate', async (req, res) => {
