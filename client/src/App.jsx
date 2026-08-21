@@ -9,6 +9,7 @@ export default function App() {
   const [matchSource, setMatchSource] = useState(null);
   const [matchDescription, setMatchDescription] = useState(null);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [isPredictionComplete, setIsPredictionComplete] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [lastUserInput, setLastUserInput] = useState(null);
@@ -73,6 +74,7 @@ export default function App() {
 
   const fetchRelationshipMatch = async (userInput) => {
     setIsLoading(true);
+    setIsPredictionComplete(false);
     setError(null);
     setLastUserInput(userInput);
 
@@ -121,6 +123,7 @@ export default function App() {
   const handleReset = () => {
     setMatchData(null);
     setError(null);
+    setIsPredictionComplete(false);
   };
 
   return (
@@ -218,49 +221,56 @@ export default function App() {
 
         {matchData && !isLoading && (
           <div className="match-result-workspace">
-            <ZigZagDiagram matchData={matchData} matchSource={matchSource} />
-
-            <MatchDescription
+            <ZigZagDiagram
               matchData={matchData}
-              onDescriptionChange={setMatchDescription}
-              triggerRef={descTriggerRef}
+              matchSource={matchSource}
+              onPredictionComplete={setIsPredictionComplete}
             />
 
-            <div className="action-buttons-layout">
-              {/* Row 1: Side-by-side Generate Description and Share Match Snap */}
-              <div className="buttons-row-top">
-                <button
-                  className="stark-button secondary"
-                  style={{ width: '100%', justifyContent: 'center', fontSize: '0.92rem', padding: '0.9rem 1rem' }}
-                  onClick={() => descTriggerRef.current && descTriggerRef.current()}
-                >
-                  ✨ RE-GENERATE DESCRIPTION
-                </button>
-                <button
-                  className="stark-button"
-                  style={{
-                    width: '100%',
-                    justifyContent: 'center',
-                    fontSize: '0.92rem',
-                    padding: '0.9rem 1rem',
-                    background: '#FFFC00',
-                    color: '#000000',
-                    border: '2.5px solid #000'
-                  }}
-                  onClick={() => setIsShareModalOpen(true)}
-                >
-                  👻 SHARE MATCH SNAP
-                </button>
-              </div>
+            {/* Reveal Sarcastic Description & Side-by-Side Action Buttons ONLY after Node 7 finishes predicting */}
+            {isPredictionComplete && (
+              <div style={{ animation: 'fadeIn 0.3s ease' }}>
+                <MatchDescription
+                  matchData={matchData}
+                  onDescriptionChange={setMatchDescription}
+                  triggerRef={descTriggerRef}
+                />
 
-              {/* Row 2: Big Prominent Predict Better Button Below */}
-              <button
-                className="stark-button predict-better-main-btn"
-                onClick={() => fetchRelationshipMatch(lastUserInput)}
-              >
-                PREDICT BETTER ↺
-              </button>
-            </div>
+                <div className="action-buttons-layout">
+                  <div className="buttons-row-side-by-side">
+                    <button
+                      className="stark-button"
+                      style={{
+                        flex: 1,
+                        justifyContent: 'center',
+                        fontSize: '0.95rem',
+                        padding: '0.9rem 1.2rem',
+                        background: 'var(--pop-pink)',
+                        color: '#FFFFFF'
+                      }}
+                      onClick={() => fetchRelationshipMatch(lastUserInput)}
+                    >
+                      PREDICT BETTER ↺
+                    </button>
+                    <button
+                      className="stark-button"
+                      style={{
+                        flex: 1,
+                        justifyContent: 'center',
+                        fontSize: '0.95rem',
+                        padding: '0.9rem 1.2rem',
+                        background: '#FFFC00',
+                        color: '#000000',
+                        border: '2.5px solid #000'
+                      }}
+                      onClick={() => setIsShareModalOpen(true)}
+                    >
+                      👻 SHARE MATCH SNAP
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {isShareModalOpen && (
               <SocialShareModal

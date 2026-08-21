@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-export default function ZigZagDiagram({ matchData, matchSource }) {
+export default function ZigZagDiagram({ matchData, matchSource, onPredictionComplete }) {
   const [activeStep, setActiveStep] = useState(1);
   const [isDone, setIsDone] = useState(false);
   const [scrambleValue, setScrambleValue] = useState('');
@@ -83,6 +83,7 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
   useEffect(() => {
     setActiveStep(1);
     setIsDone(false);
+    if (onPredictionComplete) onPredictionComplete(false);
 
     let step = 1;
     const interval = setInterval(() => {
@@ -91,6 +92,7 @@ export default function ZigZagDiagram({ matchData, matchSource }) {
         setActiveStep(step);
       } else {
         setIsDone(true);
+        if (onPredictionComplete) onPredictionComplete(true);
         clearInterval(interval);
       }
     }, 1200);
