@@ -198,7 +198,7 @@ export default function App() {
                 className="stark-button"
                 onClick={() => fetchRelationshipMatch(lastUserInput || { age: 24, gender: 'Female' })}
               >
-                TRY AGAIN ↺
+                PREDICT BETTER ↺
               </button>
               <button
                 className="stark-button secondary"
@@ -220,7 +220,7 @@ export default function App() {
                 style={{ width: '100%', maxWidth: '360px', justifyContent: 'center', fontSize: '1.05rem', padding: '1rem 2rem' }}
                 onClick={() => fetchRelationshipMatch(lastUserInput)}
               >
-                TRY AGAIN ↺
+                PREDICT BETTER ↺
               </button>
             </div>
           </div>
