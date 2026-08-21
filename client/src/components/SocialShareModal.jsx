@@ -6,8 +6,12 @@ export default function SocialShareModal({ matchData, matchDescription, onClose 
   const [copied, setCopied] = useState(false);
   const snapCardRef = useRef(null);
 
+  const displayHost = (typeof window !== 'undefined' && window.location.host && !window.location.host.includes('localhost'))
+    ? window.location.host
+    : 'my-next-relationship.vercel.app';
+
   const getShareText = () => {
-    let text = `⚡ My Next Relationship Match ⚡\n`;
+    let text = `My Next Relationship Match\n`;
     text += `👤 Age: ${matchData.age} | ${matchData.gender}\n`;
     text += `📏 Height: ${matchData.height}\n`;
     text += `💼 Job: ${matchData.job}\n`;
@@ -17,7 +21,8 @@ export default function SocialShareModal({ matchData, matchDescription, onClose 
     if (matchDescription) {
       text += `\n🔮 Sarcastic Vibe: "${matchDescription}"\n`;
     }
-    text += `\nFind your match at: ${window.location.origin}`;
+    const shareUrl = window.location.origin.includes('localhost') ? 'https://my-next-relationship.vercel.app' : window.location.origin;
+    text += `\nFind your match at: ${shareUrl}`;
     return text;
   };
 
@@ -101,7 +106,7 @@ export default function SocialShareModal({ matchData, matchDescription, onClose 
         <div style={{ overflow: 'hidden', height: 0, position: 'absolute', top: '-9999px', left: '-9999px' }}>
           <div ref={snapCardRef} className="snap-story-card">
             <div className="snap-card-badge">DYNAMIC MATCHMAKING ENGINE // VER 1.0</div>
-            <h2 className="snap-card-title">MY NEXT RELATIONSHIP ⚡</h2>
+            <h2 className="snap-card-title">MY NEXT RELATIONSHIP</h2>
 
             <div className="snap-params-grid">
               <div className="snap-param-item"><strong>AGE:</strong> {matchData.age}</div>
@@ -121,7 +126,7 @@ export default function SocialShareModal({ matchData, matchDescription, onClose 
             )}
 
             <div className="snap-card-footer">
-              🔗 TRY YOUR MATCH AT: <strong>my-next-relationship.onrender.com</strong>
+              🔗 TRY YOUR MATCH AT: <strong>{displayHost}</strong>
             </div>
           </div>
         </div>
@@ -133,7 +138,7 @@ export default function SocialShareModal({ matchData, matchDescription, onClose 
               📱 SNAPCHAT STORY PREVIEW (9:16 CARD)
             </div>
             <div className="mini-snap-card">
-              <div style={{ fontWeight: '900', fontSize: '1rem', color: '#000', marginBottom: '0.4rem' }}>MY NEXT RELATIONSHIP ⚡</div>
+              <div style={{ fontWeight: '900', fontSize: '1rem', color: '#000', marginBottom: '0.4rem' }}>MY NEXT RELATIONSHIP</div>
               <div style={{ fontSize: '0.82rem', lineHeight: '1.4', fontWeight: '700' }}>
                 👤 {matchData.age} y/o {matchData.gender} ({matchData.height})<br />
                 💼 {matchData.job}<br />
@@ -146,7 +151,7 @@ export default function SocialShareModal({ matchData, matchDescription, onClose 
                 </div>
               )}
               <div style={{ marginTop: '0.5rem', background: '#FFFFFF', border: '1.5px solid #000', padding: '0.35rem 0.5rem', fontSize: '0.72rem', fontWeight: '800', fontFamily: 'var(--font-mono)', color: '#000', textAlign: 'center' }}>
-                🔗 TRY IT AT: my-next-relationship.onrender.com
+                🔗 TRY IT AT: {displayHost}
               </div>
             </div>
           </div>
