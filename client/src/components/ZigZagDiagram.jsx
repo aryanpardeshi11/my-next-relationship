@@ -131,7 +131,7 @@ export default function ZigZagDiagram({ matchData, matchSource, onPredictionComp
         </div>
         <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
           <span className="match-source-badge">
-            ENGINE: NEURAL CORE (ONLINE)
+            MATCHMAKER: DELUSIONAL AI
           </span>
           <span
             className="mono-tag"
