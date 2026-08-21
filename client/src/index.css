@@ -415,7 +415,8 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   flex-direction: column;
   gap: 0.9rem;
-  margin-top: 1.8rem;
+  margin-top: 2.2rem;
+  margin-bottom: 2.5rem;
   width: 100%;
   max-width: 680px;
   margin-left: auto;
@@ -427,6 +428,18 @@ h1, h2, h3, h4, h5, h6 {
   flex-direction: row;
   gap: 1rem;
   width: 100%;
+}
+
+.buttons-row-side-by-side .stark-button {
+  flex: 1 1 50%;
+  justify-content: center;
+}
+
+@media (max-width: 600px) {
+  .buttons-row-side-by-side {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
 }
 
 /* Mobile Scroll Hint - Hidden on Desktop (>768px), Visible on Mobile (<=768px) */
@@ -455,8 +468,9 @@ h1, h2, h3, h4, h5, h6 {
   background: var(--pop-yellow);
   border: 3px solid #000000;
   box-shadow: 4px 4px 0px #000000;
-  padding: 0.8rem 1.5rem;
-  margin-top: 1.5rem;
+  padding: 0.95rem 1.6rem;
+  margin-top: 2.8rem;
+  margin-bottom: 2.5rem;
   letter-spacing: 0.03em;
   text-transform: uppercase;
 }
@@ -493,7 +507,9 @@ h1, h2, h3, h4, h5, h6 {
   background: #FFFFFF;
   border: 3px solid var(--border-color);
   box-shadow: 5px 5px 0px var(--border-color);
-  padding: 1rem 1.2rem;
+  padding: 1.1rem 1.4rem;
+  margin-top: 2.2rem;
+  margin-bottom: 2.2rem;
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
