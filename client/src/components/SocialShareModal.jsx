@@ -57,7 +57,6 @@ export default function SocialShareModal({ matchData, matchDescription, onClose 
 
   const handleNativeShare = async () => {
     const canvas = await generateCanvasImage();
-    const text = getShareText();
 
     if (canvas && navigator.share) {
       try {
@@ -65,14 +64,12 @@ export default function SocialShareModal({ matchData, matchDescription, onClose 
           if (blob && navigator.canShare && navigator.canShare({ files: [new File([blob], 'match-snap.png', { type: 'image/png' })] })) {
             const file = new File([blob], 'match-snap.png', { type: 'image/png' });
             await navigator.share({
-              title: 'My Next Relationship Match',
-              text: text,
+              title: 'My Next Relationship',
               files: [file]
             });
           } else {
             await navigator.share({
-              title: 'My Next Relationship Match',
-              text: text,
+              title: 'My Next Relationship',
               url: window.location.href
             });
           }
