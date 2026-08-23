@@ -44,7 +44,7 @@ Instead of standard dates, the **Predictive Match Path** generates 7 hilarous, s
 
 ### 3. 👻 Snapchat & Instagram 9:16 Story Exporter
 
-- **`👻 SHARE MATCH SNAP`** button sits side-by-side with `PREDICT BETTER ↺` in equal size.
+- **`👻 SHARE MATCH SNAP`** button sits side-by-side with `I DESERVE BETTER ↺` in equal size.
 - Uses `html2canvas` to render a high-res (960x540) vertical 9:16 story image card ready for Snapchat or Instagram Stories.
 - **Clean Image Sharing**: Uses native Web Share API (`navigator.share`) to send **only the clean PNG image card** directly to Snapchat or WhatsApp without annoying text clutter.
 - **Dynamic Site Link**: Displays the active host link (`my-next-relationship.vercel.app` / `my-next-relationship.onrender.com`) directly on the image card so friends can try it.

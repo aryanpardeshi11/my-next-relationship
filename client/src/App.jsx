@@ -207,7 +207,7 @@ export default function App() {
                 className="stark-button"
                 onClick={() => fetchRelationshipMatch(lastUserInput || { age: 24, gender: 'Female' })}
               >
-                PREDICT BETTER ↺
+                I DESERVE BETTER ↺
               </button>
               <button
                 className="stark-button secondary"
@@ -250,7 +250,7 @@ export default function App() {
                       }}
                       onClick={() => fetchRelationshipMatch(lastUserInput)}
                     >
-                      PREDICT BETTER ↺
+                      I DESERVE BETTER ↺
                     </button>
                     <button
                       className="stark-button"
