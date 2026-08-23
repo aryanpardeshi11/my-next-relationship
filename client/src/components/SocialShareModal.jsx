@@ -20,6 +20,14 @@ export default function SocialShareModal({ matchData, userInput, matchDescriptio
     ? window.location.host
     : 'my-next-relationship.vercel.app';
 
+  const getDesperationLabel = (val) => {
+    if (!val && val !== 0) return '75% (HIGH 🆘)';
+    if (val >= 86) return `${val}% (MAX UNHINGED 🔥)`;
+    if (val >= 66) return `${val}% (HIGH 🆘)`;
+    if (val >= 31) return `${val}% (MEDIUM 😬)`;
+    return `${val}% (CHILL 🥱)`;
+  };
+
   const getContrastingStyle = (baseStyle, themeId) => {
     let { bg, color } = baseStyle || { bg: '#FFFC00', color: '#000' };
     if ((bg === '#FFFC00' || bg === '#FFE600') && themeId === 'yellow') {
