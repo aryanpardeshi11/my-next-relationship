@@ -35,9 +35,14 @@ function generateFallbackMatch(userAge, userGender) {
     'Worm Picker', 'Iceberg Mover', 'Towel Sniffer', 'Ant Stunt Double', 'Volcano Monitor'
   ];
 
-  const genders = [
+  let genders = [
     'Male', 'Female', 'Transgender Woman', 'Transgender Man', 'Non-binary', 'Agender'
   ];
+  if (userGender === 'Male') {
+    genders = genders.filter(g => g !== 'Female');
+  } else if (userGender === 'Female') {
+    genders = genders.filter(g => g !== 'Male');
+  }
 
   const personalities = [
     'Fears Tupperware', 'Ranks Soup Brands', 'Eats Yellow Food', 'Quotes Old Movies', 'Competes W/ Toddlers',
@@ -172,7 +177,7 @@ Strict Constraints:
 - Age: extreme age strictly between 12-19 OR 45-90. NEVER 20-40. Output ONLY the numeric age number (e.g. "14", "78", "16", "89"). Do NOT include any parenthetical comments or text.
 - Height: unusual specific height (e.g., "4'11 and ¾\"", "6'8\"", "5'3.5\"").
 - Job: weird profession in 2-3 words (e.g. "Golf Ball Diver", "Water Slide Tester", "Pet Food Taster").
-- Gender: gender identity (e.g. Male, Female, Transgender Woman, Transgender Man, Non-binary, Agender).
+- Gender: gender identity.${userGender === 'Male' ? ' CRITICAL RULE: User selected Male, so do NOT predict "Female" as match gender. Select from: Male, Transgender Woman, Transgender Man, Non-binary, Agender.' : userGender === 'Female' ? ' CRITICAL RULE: User selected Female, so do NOT predict "Male" as match gender. Select from: Female, Transgender Woman, Transgender Man, Non-binary, Agender.' : ' (e.g. Male, Female, Transgender Woman, Transgender Man, Non-binary, Agender).'}
 - Personality: short sarcastic trait in 2-3 words (e.g. "Fears Tupperware", "Ranks Soup Brands").
 - Hobby: short weird hobby in 2-3 words (e.g. "Bird Watching", "Collecting Lint", "Micro-Pies").
 - Green Flag: short sarcastic red-flag habit labeled as green flag in satire (e.g. "Claps On Plane Landing", "Brings Date Spreadsheet").
@@ -202,6 +207,11 @@ Output MUST be strictly valid JSON without markdown tags, backticks, or extra te
       // Clean backticks if any
       const cleaned = text.replace(/```json/g, '').replace(/```/g, '').trim();
       matchData = JSON.parse(cleaned);
+      if (userGender === 'Male' && matchData.gender === 'Female') {
+        matchData.gender = getRandom(['Male', 'Transgender Woman', 'Transgender Man', 'Non-binary', 'Agender']);
+      } else if (userGender === 'Female' && matchData.gender === 'Male') {
+        matchData.gender = getRandom(['Female', 'Transgender Woman', 'Transgender Man', 'Non-binary', 'Agender']);
+      }
     } catch (e) {
       console.warn('[API] JSON parse error on Gemini output, falling back to clean data:', e);
       matchData = generateFallbackMatch(userAge, userGender);
