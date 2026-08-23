@@ -67,7 +67,11 @@ export default function SocialShareModal({ matchData, userInput, matchDescriptio
         scale: 2,
         backgroundColor: '#FFE600',
         useCORS: true,
-        logging: false
+        logging: false,
+        width: 540,
+        height: 960,
+        windowWidth: 540,
+        windowHeight: 960
       });
       return canvas;
     } catch (err) {
@@ -123,7 +127,7 @@ export default function SocialShareModal({ matchData, userInput, matchDescriptio
         </div>
 
         {/* Hidden Snap Story Card (Formatted as 9:16 Vertical Story Image for Snapchat) */}
-        <div style={{ overflow: 'hidden', height: 0, position: 'absolute', top: '-9999px', left: '-9999px' }}>
+        <div style={{ position: 'fixed', left: '-9999px', top: 0, width: '540px', height: '960px', zIndex: -9999, pointerEvents: 'none' }}>
           <div ref={snapCardRef} className="snap-story-card">
             <div className="snap-card-title-box">
               <div className="snap-card-title-text">
