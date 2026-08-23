@@ -134,17 +134,16 @@ export default function App() {
 
   // Client-side fallback match generator (50+ items per pool, desperation tiering, & Pity System)
   const generateClientFallback = (userInput, currentCount) => {
-    // Pity System: After every 4 chaotic attempts, the next 2 attempts (5th & 6th) yield genuine realistic matches!
-    if (currentCount && (currentCount % 6 === 5 || currentCount % 6 === 0)) {
-      const isSecond = (currentCount % 6 === 0);
+    // Pity System: After every 3 chaotic attempts, the 4th attempt yields a genuine realistic match!
+    if (currentCount && currentCount % 4 === 0) {
       return {
-        age: isSecond ? '27' : '26',
-        height: isSecond ? `5'11"` : `5'10"`,
-        job: isSecond ? 'UX Designer' : 'Architect',
+        age: '26',
+        height: `5'10"`,
+        job: 'Architect',
         gender: userInput?.gender === 'Male' ? 'Female' : 'Male',
-        personality: isSecond ? 'Great Listener & Empathetic' : 'Makes Great Coffee',
-        hobby: isSecond ? 'Weekend Hiking & Cooking' : 'Golden Hour Photography',
-        greenFlag: isSecond ? 'Communicates Openly' : 'Remembers Your Birthday',
+        personality: 'Makes Great Coffee',
+        hobby: 'Golden Hour Photography',
+        greenFlag: 'Remembers Your Birthday',
         isPerfectMatch: true
       };
     }

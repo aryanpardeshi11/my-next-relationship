@@ -91,17 +91,16 @@ const GREEN_FLAGS_POOL = [
 
 // Fallback generator for development or when GEMINI_API_KEY is not set
 function generateFallbackMatch(userAge, userGender, desperation = 75, attemptCount = 1) {
-  // Pity System: After every 4 chaotic attempts, the next 2 attempts (5th & 6th) yield genuine realistic matches!
-  if (attemptCount && (attemptCount % 6 === 5 || attemptCount % 6 === 0)) {
-    const isSecond = (attemptCount % 6 === 0);
+  // Pity System: After every 3 chaotic attempts, the 4th attempt yields a genuine realistic match!
+  if (attemptCount && attemptCount % 4 === 0) {
     return {
-      age: isSecond ? '27' : '26',
-      height: isSecond ? `5'11"` : `5'10"`,
-      job: isSecond ? 'UX Designer' : 'Architect',
+      age: '26',
+      height: `5'10"`,
+      job: 'Architect',
       gender: userGender === 'Male' ? 'Female' : 'Male',
-      personality: isSecond ? 'Great Listener & Empathetic' : 'Makes Great Coffee',
-      hobby: isSecond ? 'Weekend Hiking & Cooking' : 'Golden Hour Photography',
-      greenFlag: isSecond ? 'Communicates Openly' : 'Remembers Your Birthday',
+      personality: 'Makes Great Coffee',
+      hobby: 'Golden Hour Photography',
+      greenFlag: 'Remembers Your Birthday',
       isPerfectMatch: true
     };
   }

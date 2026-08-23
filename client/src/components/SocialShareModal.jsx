@@ -28,34 +28,61 @@ export default function SocialShareModal({ matchData, userInput, matchDescriptio
     return `${val}% (CHILL 🥱)`;
   };
 
-  const getContrastingStyle = (baseStyle, themeId) => {
-    let { bg, color } = baseStyle || { bg: '#FFFC00', color: '#000' };
-    if ((bg === '#FFFC00' || bg === '#FFE600') && themeId === 'yellow') {
-      bg = '#00E5FF';
-      color = '#000000';
-    } else if (bg === '#FF52A2' && themeId === 'pink') {
-      bg = '#00FF66';
-      color = '#000000';
-    } else if (bg === '#00E5FF' && themeId === 'cyan') {
-      bg = '#FF52A2';
-      color = '#FFFFFF';
-    } else if (themeId === 'goth' && (bg === '#A060FF' || bg === '#8B5CF6' || bg === '#121212' || bg === '#000000')) {
-      bg = '#FFFC00';
-      color = '#000000';
+  const getThemeCardColors = (themeId) => {
+    switch (themeId) {
+      case 'yellow':
+        return {
+          seekerBg: '#FFFFFF',
+          seekerText: '#000000',
+          reactionBg: '#FF52A2',
+          reactionText: '#FFFFFF',
+          desperationBg: '#00E5FF',
+          desperationText: '#000000'
+        };
+      case 'pink':
+        return {
+          seekerBg: '#FFFFFF',
+          seekerText: '#000000',
+          reactionBg: '#FFFC00',
+          reactionText: '#000000',
+          desperationBg: '#00FF66',
+          desperationText: '#000000'
+        };
+      case 'green':
+        return {
+          seekerBg: '#FFFFFF',
+          seekerText: '#000000',
+          reactionBg: '#FF52A2',
+          reactionText: '#FFFFFF',
+          desperationBg: '#00E5FF',
+          desperationText: '#000000'
+        };
+      case 'cyan':
+        return {
+          seekerBg: '#FFFFFF',
+          seekerText: '#000000',
+          reactionBg: '#FFFC00',
+          reactionText: '#000000',
+          desperationBg: '#FF52A2',
+          desperationText: '#FFFFFF'
+        };
+      case 'goth':
+      default:
+        return {
+          seekerBg: '#FFFFFF',
+          seekerText: '#000000',
+          reactionBg: '#FFFC00',
+          reactionText: '#000000',
+          desperationBg: '#00FF66',
+          desperationText: '#000000'
+        };
     }
-    return { bg, color };
   };
 
   const renderDesperationProgressBar = (desperationValue, themeId, isMini = false) => {
     const val = desperationValue || 75;
     const label = getDesperationLabel(val);
-
-    // Dynamic contrast color selection to guarantee pop against card background
-    let boxBg = '#FFFC00'; // Default Neo Yellow container box
-    if (themeId === 'yellow') boxBg = '#00E5FF'; // Hyper Cyan box on yellow card
-    if (themeId === 'cyan') boxBg = '#FF52A2';   // Cyber Pink box on cyan card
-    if (themeId === 'pink') boxBg = '#00FF66';   // Toxic Green box on pink card
-    if (themeId === 'goth') boxBg = '#FFFC00';   // Neo Yellow box on dark goth card
+    const colors = getThemeCardColors(themeId);
 
     let fillGradient = 'linear-gradient(90deg, #FFFC00 0%, #FF52A2 100%)';
     if (val >= 86) fillGradient = 'linear-gradient(90deg, #FF52A2 0%, #FF0000 100%)';
@@ -63,12 +90,12 @@ export default function SocialShareModal({ matchData, userInput, matchDescriptio
 
     return (
       <div style={{
-        background: boxBg,
+        background: colors.desperationBg,
         border: isMini ? '1.5px solid #000' : '2.5px solid #000',
         boxShadow: isMini ? '2px 2px 0px #000' : '3px 3px 0px #000',
         padding: isMini ? '0.35rem 0.45rem' : '0.5rem 0.75rem',
         margin: isMini ? '0.35rem 0' : '0.6rem 0',
-        color: '#000'
+        color: colors.desperationText
       }}>
         <div style={{
           display: 'flex',
@@ -311,11 +338,11 @@ export default function SocialShareModal({ matchData, userInput, matchDescriptio
             )}
 
             {userReaction && (() => {
-              const rxStyle = getContrastingStyle({ bg: userReaction.bg, color: userReaction.color }, selectedTheme.id);
+              const themeColors = getThemeCardColors(selectedTheme.id);
               return (
                 <div style={{
-                  background: rxStyle.bg,
-                  color: rxStyle.color,
+                  background: themeColors.reactionBg,
+                  color: themeColors.reactionText,
                   border: '3.5px solid #000',
                   boxShadow: '4px 4px 0px #000',
                   padding: '0.45rem 0.85rem',
@@ -382,11 +409,11 @@ export default function SocialShareModal({ matchData, userInput, matchDescriptio
               )}
 
               {userReaction && (() => {
-                const rxStyle = getContrastingStyle({ bg: userReaction.bg, color: userReaction.color }, selectedTheme.id);
+                const themeColors = getThemeCardColors(selectedTheme.id);
                 return (
                   <div style={{
-                    background: rxStyle.bg,
-                    color: rxStyle.color,
+                    background: themeColors.reactionBg,
+                    color: themeColors.reactionText,
                     border: '1.5px solid #000',
                     padding: '0.2rem 0.4rem',
                     fontSize: '0.72rem',
