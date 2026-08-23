@@ -82,7 +82,7 @@ export default function SocialShareModal({ matchData, userInput, matchDescriptio
           textTransform: 'uppercase',
           letterSpacing: '0.4px'
         }}>
-          <span style={{ flexShrink: 0 }}>🎚️ DESPERATION METER</span>
+          <span style={{ flexShrink: 0 }}>🎚️ USER DESPERATION LEVEL...</span>
           <span style={{
             background: '#000',
             color: '#FFF',
