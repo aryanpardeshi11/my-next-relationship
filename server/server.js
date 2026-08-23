@@ -11,73 +11,134 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
+// Expanded 50+ item pools for each satirical parameter
+const AGES_POOL = [
+  '12', '13', '14', '15', '16', '17', '18', '19', '45', '46',
+  '47', '48', '49', '50', '51', '52', '53', '54', '55', '56',
+  '57', '58', '59', '60', '61', '62', '63', '64', '65', '66',
+  '67', '68', '69', '70', '71', '72', '73', '74', '75', '76',
+  '77', '78', '79', '80', '81', '82', '83', '84', '85', '86',
+  '87', '88', '89', '90'
+];
+
+const HEIGHTS_POOL = [
+  `4'11" and ¾"`, `6'8"`, `5'2" (5'7" in boots)`, `6'1" (2mm exact)`, `4'9" big boots`,
+  `7'0"`, `5'0" on tiptoes`, `6'5" and a half`, `4'10" exactly`, `6'11" giraffe`,
+  `5'1" in heels`, `6'7" slouching`, `4'8" with hat`, `6'9" (nice)`, `5'3.5"`,
+  `6'2" in socks`, `4'7" power stance`, `7'2" door-hitter`, `5'4" posture`, `6'6" giant`,
+  `4'9.5"`, `6'10" benched`, `5'5" towering`, `6'4" stretched`, `7'3" ceiling`,
+  `4'6" compact`, `6'3" barefoot`, `5'6" average`, `7'1" giant`, `4'8.5"`,
+  `6'0" (rounded up)`, `5'1.5"`, `6'11.5"`, `4'5" miniature`, `7'4" sky high`,
+  `5'7.5"`, `6'5.5"`, `4'11.9"`, `6'8.5"`, `5'3" exact`, `6'9.5"`,
+  `4'10.5"`, `7'5" tower`, `5'8" posture`, `6'7.5"`, `4'4" micro`,
+  `6'1.8"`, `5'9" normal`, `7'6" titan`, `4'9.9"`
+];
+
+const JOBS_POOL = [
+  'Golf Ball Diver', 'Water Slide Tester', 'Line Stander', 'Fortune Writer', 'Pet Psychic',
+  'Snake Milker', 'Odor Judge', 'Paint Inspector', 'Lego Separator', 'Dice Tester',
+  'Armpit Smeller', 'Chicken Sexer', 'Queue Waiter', 'Furniture Tester', 'Pro Sleeper',
+  'Cat Caddy', 'Meme Historian', 'Bed Tester', 'Duck Herder', 'Dog Food Taster',
+  'Worm Picker', 'Iceberg Mover', 'Towel Sniffer', 'Ant Stunt Double', 'Volcano Monitor',
+  'Professional Mourner', 'Grossologist', 'Golf Caddy For Cats', 'Dinosaur Bone Duster',
+  'Feng Shui Consultant For Dogs', 'Scrapple Specialist', 'Ostrich Handler', 'Wrinkle Eraser',
+  'Stunt Double For Statues', 'Pigeon Chaser', 'Teddy Bear Parachutist', 'Bubble Wrap Popper',
+  'Gummy Bear Sculptor', 'Toothpaste Cap Screwer', 'Cereal Sorting Analyst', 'Unicorn Breeder',
+  'Professional Whisperer', 'Sock Matcher', 'Snail Race Judge', 'Traffic Cone Placer',
+  'Dust Bunny Wrangler', 'Tea Leaf Reader', 'Cloud Namer', 'Avocado Ripeness Judge', 'Meme Archaeologist'
+];
+
+const PERSONALITIES_POOL = [
+  'Fears Tupperware', 'Ranks Soup Brands', 'Eats Yellow Food', 'Quotes Old Movies', 'Competes W/ Toddlers',
+  'Rates Eye Contact', 'Whispers To Plants', 'Refuses Tuesdays', 'Explains Memes', 'Counts Elevator Buttons',
+  'Judges Cereal', 'Fears Toasters', 'Aggressively Polite', 'Argues With Siri', 'Ranks Spots',
+  'Obsessed W/ Lint', 'Mirror Monologues', 'Rates Tap Water', 'Fears Bubble Wrap', 'Aggressively Chill',
+  'Sings Microwave', 'Corrects Grammar', 'Monopolizes Trivia', 'Judges Handshakes', 'Fears Slow Wi-Fi',
+  'Smells Book Pages', 'Ranks Door Knobs', 'Fears Bananas', 'Whispers To Ice', 'Counts Stairs Out Loud',
+  'Rates Ceiling Fans', 'Judges Shoelaces', 'Argues With GPS', 'Obsessed W/ Receipts', 'Fears Pigeons',
+  'Ranks Paper Clips', 'Talks To Houseplants', 'Evaluates Hugs', 'Fears Balloons', 'Quotes Cartoons',
+  'Rates Sidewalk Cracks', 'Judges Napkins', 'Fears Static Electricity', 'Monopolizes AUX Cord',
+  'Counts Car Colors', 'Rates Elevator Music', 'Fears Automatic Doors', 'Obsessed W/ Stickers',
+  'Judges Toothpicks', 'Whispers To Switches'
+];
+
+const HOBBIES_POOL = [
+  'Bird Watching', 'Collecting Lint', 'Baking Micro-Pies', 'Aggressive Origami', 'Cat Pitch Tuning',
+  'Synchronized Mowing', 'Sock Sorting', 'Cloud Rating', 'Extreme Ironing', 'Pencil Sharpening',
+  'Spoon Balancing', 'Elevator Riding', 'Leaf Collecting', 'Brick Stacking', 'Popping Bubbles',
+  'Gnome Painting', 'Dust Bun Hunting', 'Tunnel Yodeling', 'Pebble Cataloging', 'Ant Race Betting',
+  'Washing Marbles', 'Staring Contests', 'Noodle Sculpting', 'Button Counting', 'Tree Hugging',
+  'Bread Tag Stacking', 'Competitive Napping', 'Marble Rolling', 'Bottle Cap Sorting', 'Snail Racing',
+  'Puddle Jumping', 'Toothpick Towering', 'Rubber Band Chaining', 'Ticket Stub Archiving', 'Acorn Hoarding',
+  'Yarn Untangling', 'Shoelace Braiding', 'Paper Crane Folding', 'Feather Collection', 'Magnet Hunting',
+  'Stamp Licking', 'Coin Stacking', 'Soap Carving', 'Stick Fighting', 'Bubble Blower Tuning',
+  'Doodle Rating', 'Cereal Box Reading', 'Lint Roller Racing', 'Paper Clip Chaining', 'Shadow Puppetry'
+];
+
+const GREEN_FLAGS_POOL = [
+  'Claps On Landing', 'Wipes On Jeans', 'Brings Spreadsheet', 'Whispers "Nice" Paying', 'Listens 2.5x Speed',
+  'Asks "Who Am I?"', 'Reply-All On Emails', 'Ketchup On Tacos', 'Pizza W/ Fork', 'Leaves 1 Sec Microwave',
+  'Bites Ice Cream', 'Uses Unironic Emojis', 'Says "Irregardless"', 'Socks W/ Sandals', 'Double Dips Chips',
+  'Spoils Endings', 'Leaves Carts Stray', '45 Min Showers', 'Chews Ice Loudly', 'Talks Thru Movies',
+  'Milk Before Cereal', 'Uses Comic Sans', 'Snoozes 12 Alarms', 'Makes Bed At 11PM', 'Claps At Movie End',
+  'Puts Ketchup On Eggs', 'Eats Apple Core', 'Wears Sunglasses Inside', 'Uses Speakerphone Publicly',
+  'Leaves Doors Ajar', 'Takes 100 Selfies', 'Uses Typewriter', 'Drinks Pickle Juice', 'Eats Pizza Crust First',
+  'Calls Everyone "Champ"', 'Wears Crocs To Weddings', 'Types With 2 Fingers', 'Leaves Caps Off Pens',
+  'Says "Supposably"', 'Licks Knife Clean', 'Unplugs Wi-Fi At Night', 'Uses Flash On Photos',
+  'Takes Notes In Crayon', 'Eats Kiwi Skin', 'Humms Loudly Shopping', 'Asks For Water No Ice',
+  'Wears 3 Watches', 'Brings Own Hot Sauce', 'Reads Terms Of Service', 'Claps When Elevator Arrives'
+];
+
 // Fallback generator for development or when GEMINI_API_KEY is not set
-function generateFallbackMatch(userAge, userGender) {
-  const ages = [
-    '12', '13', '14', '15', '16', '17', '18', '19', '45', '47',
-    '51', '54', '58', '62', '65', '69', '72', '75', '78', '81',
-    '84', '87', '89', '91', '94'
-  ];
+function generateFallbackMatch(userAge, userGender, desperation = 75, attemptCount = 1) {
+  // Pity System: After every 4 chaotic attempts, the next 2 attempts (5th & 6th) yield genuine realistic matches!
+  if (attemptCount && (attemptCount % 6 === 5 || attemptCount % 6 === 0)) {
+    const isSecond = (attemptCount % 6 === 0);
+    return {
+      age: isSecond ? '27' : '26',
+      height: isSecond ? `5'11"` : `5'10"`,
+      job: isSecond ? 'UX Designer' : 'Architect',
+      gender: userGender === 'Male' ? 'Female' : 'Male',
+      personality: isSecond ? 'Great Listener & Empathetic' : 'Makes Great Coffee',
+      hobby: isSecond ? 'Weekend Hiking & Cooking' : 'Golden Hour Photography',
+      greenFlag: isSecond ? 'Communicates Openly' : 'Remembers Your Birthday',
+      isPerfectMatch: true
+    };
+  }
 
-  const heights = [
-    `4'11" and ¾"`, `6'8"`, `5'2" (5'7" in boots)`, `6'1" (2mm exact)`, `4'9" big boots`,
-    `7'0"`, `5'0" on tiptoes`, `6'5" and a half`, `4'10" exactly`, `6'11" giraffe`,
-    `5'1" in heels`, `6'7" slouching`, `4'8" with hat`, `6'9" (nice)`, `5'3.5"`,
-    `6'2" in socks`, `4'7" power stance`, `7'2" door-hitter`, `5'4" posture`, `6'6" giant`,
-    `4'9.5"`, `6'10" benched`, `5'5" towering`, `6'4" stretched`, `7'3" ceiling`
-  ];
-
-  const jobs = [
-    'Golf Ball Diver', 'Water Slide Tester', 'Line Stander', 'Fortune Writer', 'Pet Psychic',
-    'Snake Milker', 'Odor Judge', 'Paint Inspector', 'Lego Separator', 'Dice Tester',
-    'Armpit Smeller', 'Chicken Sexer', 'Queue Waiter', 'Furniture Tester', 'Pro Sleeper',
-    'Cat Caddy', 'Meme Historian', 'Bed Tester', 'Duck Herder', 'Dog Food Taster',
-    'Worm Picker', 'Iceberg Mover', 'Towel Sniffer', 'Ant Stunt Double', 'Volcano Monitor'
-  ];
-
-  let genders = [
-    'Male', 'Female', 'Transgender Woman', 'Transgender Man', 'Non-binary', 'Agender'
-  ];
+  let genders = ['Male', 'Female', 'Transgender Woman', 'Transgender Man', 'Non-binary', 'Agender'];
   if (userGender === 'Male') {
     genders = genders.filter(g => g !== 'Female');
   } else if (userGender === 'Female') {
     genders = genders.filter(g => g !== 'Male');
   }
 
-  const personalities = [
-    'Fears Tupperware', 'Ranks Soup Brands', 'Eats Yellow Food', 'Quotes Old Movies', 'Competes W/ Toddlers',
-    'Rates Eye Contact', 'Whispers To Plants', 'Refuses Tuesdays', 'Explains Memes', 'Counts Elevator Buttons',
-    'Judges Cereal', 'Fears Toasters', 'Aggressively Polite', 'Argues With Siri', 'Ranks Spots',
-    'Obsessed W/ Lint', 'Mirror Monologues', 'Rates Tap Water', 'Fears Bubble Wrap', 'Aggressively Chill',
-    'Sings Microwave', 'Corrects Grammar', 'Monopolizes Trivia', 'Judges Handshakes', 'Fears Slow Wi-Fi'
-  ];
-
-  const hobbies = [
-    'Bird Watching', 'Collecting Lint', 'Baking Micro-Pies', 'Aggressive Origami', 'Cat Pitch Tuning',
-    'Synchronized Mowing', 'Sock Sorting', 'Cloud Rating', 'Extreme Ironing', 'Pencil Sharpening',
-    'Spoon Balancing', 'Elevator Riding', 'Leaf Collecting', 'Brick Stacking', 'Popping Bubbles',
-    'Gnome Painting', 'Dust Bun Hunting', 'Tunnel Yodeling', 'Pebble Cataloging', 'Ant Race Betting',
-    'Washing Marbles', 'Staring Contests', 'Noodle Sculpting', 'Button Counting', 'Tree Hugging'
-  ];
-
-  const greenFlags = [
-    'Claps On Landing', 'Wipes On Jeans', 'Brings Spreadsheet', 'Whispers "Nice" Paying', 'Listens 2.5x Speed',
-    'Asks "Who Am I?"', 'Reply-All On Emails', 'Ketchup On Tacos', 'Pizza W/ Fork', 'Leaves 1 Sec Microwave',
-    'Bites Ice Cream', 'Uses Unironic Emojis', 'Says "Irregardless"', 'Socks W/ Sandals', 'Double Dips Chips',
-    'Spoils Endings', 'Leaves Carts Stray', '45 Min Showers', 'Chews Ice Loudly', 'Talks Thru Movies',
-    'Milk Before Cereal', 'Uses Comic Sans', 'Snoozes 12 Alarms', 'Makes Bed At 11PM', 'Claps At Movie End'
-  ];
-
-  const getRandom = (arr) => arr[Math.floor(Math.random() * arr.length)];
+  const pickFromPool = (arr) => {
+    // High desperation (>= 80): Picks from chaotic upper half of array
+    // Low desperation (<= 35): Picks from lower half
+    // Medium desperation: Picks anywhere
+    const len = arr.length;
+    if (desperation >= 80) {
+      const start = Math.floor(len * 0.4);
+      const sub = arr.slice(start);
+      return sub[Math.floor(Math.random() * sub.length)];
+    } else if (desperation <= 35) {
+      const end = Math.ceil(len * 0.6);
+      const sub = arr.slice(0, end);
+      return sub[Math.floor(Math.random() * sub.length)];
+    }
+    return arr[Math.floor(Math.random() * len)];
+  };
 
   return {
-    age: getRandom(ages),
-    height: getRandom(heights),
-    job: getRandom(jobs),
-    gender: getRandom(genders),
-    personality: getRandom(personalities),
-    hobby: getRandom(hobbies),
-    greenFlag: getRandom(greenFlags)
+    age: pickFromPool(AGES_POOL),
+    height: pickFromPool(HEIGHTS_POOL),
+    job: pickFromPool(JOBS_POOL),
+    gender: pickFromPool(genders),
+    personality: pickFromPool(PERSONALITIES_POOL),
+    hobby: pickFromPool(HOBBIES_POOL),
+    greenFlag: pickFromPool(GREEN_FLAGS_POOL),
+    isPerfectMatch: false
   };
 }
 
@@ -154,14 +215,16 @@ Strictly return ONLY the plain text description (max 280 characters). Do NOT inc
   }
 });
 
+
+
 app.post('/api/generate', async (req, res) => {
-  const { age: userAge, gender: userGender } = req.body || {};
+  const { age: userAge, gender: userGender, desperation = 75, attemptCount = 1 } = req.body || {};
 
   const apiKey = process.env.GEMINI_API_KEY;
 
   if (!apiKey || apiKey.trim() === '' || apiKey.includes('your_gemini_api_key')) {
     console.log('[API] GEMINI_API_KEY not configured. Using intelligent fallback match generator.');
-    const fallbackData = generateFallbackMatch(userAge, userGender);
+    const fallbackData = generateFallbackMatch(userAge, userGender, desperation, attemptCount);
     return res.json({
       success: true,
       match: fallbackData,
