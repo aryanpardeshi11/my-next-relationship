@@ -1,14 +1,33 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import html2canvas from 'html2canvas';
+import QRCode from 'qrcode';
 
 export default function SocialShareModal({ matchData, userInput, matchDescription, onClose }) {
   const [isGenerating, setIsGenerating] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [qrDataUrl, setQrDataUrl] = useState('');
   const snapCardRef = useRef(null);
 
   const displayHost = (typeof window !== 'undefined' && window.location.host && !window.location.host.includes('localhost'))
     ? window.location.host
     : 'my-next-relationship.onrender.com';
+
+  useEffect(() => {
+    const targetUrl = (typeof window !== 'undefined' && window.location.origin && !window.location.origin.includes('localhost'))
+      ? window.location.origin
+      : 'https://my-next-relationship.onrender.com';
+
+    QRCode.toDataURL(targetUrl, {
+      width: 160,
+      margin: 1,
+      color: {
+        dark: '#000000',
+        light: '#FFFFFF'
+      }
+    })
+      .then((url) => setQrDataUrl(url))
+      .catch((err) => console.error('Failed to generate QR code:', err));
+  }, []);
 
   const getShareText = () => {
     let text = `🔥 MY NEXT RELATIONSHIP MATCH 🔥\n`;
@@ -106,8 +125,17 @@ export default function SocialShareModal({ matchData, userInput, matchDescriptio
         {/* Hidden Snap Story Card (Formatted as 9:16 Vertical Story Image for Snapchat) */}
         <div style={{ overflow: 'hidden', height: 0, position: 'absolute', top: '-9999px', left: '-9999px' }}>
           <div ref={snapCardRef} className="snap-story-card">
-            <div className="snap-card-badge">DYNAMIC MATCHMAKING ENGINE // VER 1.0</div>
-            <h2 className="snap-card-title">MY NEXT RELATIONSHIP</h2>
+            <div className="snap-card-title-box">
+              <div className="snap-card-title-text">
+                MY NEXT<br />RELATIONSHIP
+              </div>
+              {qrDataUrl && (
+                <div className="snap-qr-wrapper">
+                  <img src={qrDataUrl} alt="Scan QR Code" className="snap-qr-img" />
+                  <span className="snap-qr-label">SCAN ME</span>
+                </div>
+              )}
+            </div>
 
             {userInput && (userInput.age || userInput.gender) && (
               <div className="snap-seeker-banner">
@@ -138,7 +166,7 @@ export default function SocialShareModal({ matchData, userInput, matchDescriptio
             )}
 
             <div className="snap-card-footer">
-              🔗 TRY YOUR MATCH AT: <strong>{displayHost}</strong>
+              🔗 SCAN QR OR VISIT: <strong>{displayHost}</strong>
             </div>
           </div>
         </div>
