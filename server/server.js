@@ -81,12 +81,16 @@ function generateFallbackMatch(userAge, userGender) {
   };
 }
 
-function generateFallbackDescription(match) {
+function generateFallbackDescription(match, user) {
   const { age, height, job, gender, personality, hobby, greenFlag } = match || {};
+  const userAge = user?.age ? `${user.age} y/o` : null;
+  const userGender = user?.gender || null;
+  const userPrefix = (userAge && userGender) ? `As a ${userAge} ${userGender}, ` : (userGender ? `As a ${userGender}, ` : '');
+
   const scenarios = [
-    `Your future with this ${height} ${gender || 'partner'} (${age} y/o) who works as a ${job || 'freelancer'} revolves around their core trait: "${personality || 'Fears Tupperware'}". Expect romantic dates where they compel you into ${hobby || 'Sock Sorting'} while treating "${greenFlag || 'Claps On Landing'}" as their non-negotiable love language.`,
-    `Imagine coming home to a ${age}-year-old ${job || 'Line Stander'} (${height}) whose entire vibe is "${personality || 'Rates Tap Water'}". They will drag you into aggressive sessions of ${hobby || 'Cloud Rating'} and unironically consider "${greenFlag || 'Brings Spreadsheet'}" to be peak emotional intimacy.`,
-    `Dating this ${height} ${job || 'Pet Psychic'} means accepting that "${personality || 'Refuses Tuesdays'}" isn't just a quirk—it's a lifestyle. Between emergency sessions of ${hobby || 'Baking Micro-Pies'}, they will look you in the eye and declare "${greenFlag || 'Whispers Nice Paying'}" as their wedding vow.`
+    `${userPrefix}your future with this ${height} ${gender || 'partner'} (${age} y/o) who works as a ${job || 'freelancer'} revolves around their core trait: "${personality || 'Fears Tupperware'}". Expect romantic dates where they compel you into ${hobby || 'Sock Sorting'} while treating "${greenFlag || 'Claps On Landing'}" as their non-negotiable love language.`,
+    `Imagine a ${userAge || ''} ${userGender || 'person'} like you coming home to a ${age}-year-old ${job || 'Line Stander'} (${height}) whose entire vibe is "${personality || 'Rates Tap Water'}". They will drag you into aggressive sessions of ${hobby || 'Cloud Rating'} and unironically consider "${greenFlag || 'Brings Spreadsheet'}" to be peak emotional intimacy.`,
+    `${userPrefix}dating this ${height} ${job || 'Pet Psychic'} means accepting that "${personality || 'Refuses Tuesdays'}" isn't just a quirk—it's a lifestyle. Between emergency sessions of ${hobby || 'Baking Micro-Pies'}, they will look you in the eye and declare "${greenFlag || 'Whispers Nice Paying'}" as their wedding vow.`
   ];
   return scenarios[Math.floor(Math.random() * scenarios.length)];
 }
@@ -96,7 +100,7 @@ app.get('/api/health', (req, res) => {
 });
 
 app.post('/api/describe', async (req, res) => {
-  const { match } = req.body || {};
+  const { match, user } = req.body || {};
   if (!match) {
     return res.status(400).json({ success: false, error: 'Match data is required' });
   }
@@ -107,14 +111,16 @@ app.post('/api/describe', async (req, res) => {
     console.log('[API] GEMINI_API_KEY not configured for description. Using intelligent local sarcastic fallback.');
     return res.json({
       success: true,
-      description: generateFallbackDescription(match),
+      description: generateFallbackDescription(match, user),
       source: 'fallback'
     });
   }
 
   try {
     const ai = new GoogleGenAI({ apiKey });
+    const userDesc = (user && user.age && user.gender) ? `The user seeking the match is a ${user.age} year old ${user.gender}.` : '';
     const prompt = `You are a sarcastic, comedic matchmaker AI for a satire app.
+${userDesc}
 Given this predicted relationship match profile:
 - Age: ${match.age}
 - Height: ${match.height}
@@ -124,7 +130,7 @@ Given this predicted relationship match profile:
 - Primary Hobby: ${match.hobby}
 - Green Flag: ${match.greenFlag || match.redFlag}
 
-Write a short (2 to 3 sentences), highly exaggerated, witty, sarcastic imagination/scenario of what dating or living with this person would actually be like.
+Write a short (2 to 3 sentences), highly exaggerated, witty, sarcastic imagination/scenario of what dating or living with this person would actually be like for the user (${user?.age ? user.age + ' y/o ' : ''}${user?.gender || 'user'}). Highlight the hilarious contrast between the user's profile and their match.
 Strictly return ONLY the plain text description (max 280 characters). Do NOT include markdown tags, quotes, or JSON.`;
 
     const response = await ai.models.generateContent({
@@ -132,7 +138,7 @@ Strictly return ONLY the plain text description (max 280 characters). Do NOT inc
       contents: prompt
     });
 
-    const description = response.text ? response.text.trim() : generateFallbackDescription(match);
+    const description = response.text ? response.text.trim() : generateFallbackDescription(match, user);
     return res.json({
       success: true,
       description,
@@ -142,7 +148,7 @@ Strictly return ONLY the plain text description (max 280 characters). Do NOT inc
     console.error('[API] Error generating description via Gemini API:', error.message || error);
     return res.json({
       success: true,
-      description: generateFallbackDescription(match),
+      description: generateFallbackDescription(match, user),
       source: 'fallback_on_error'
     });
   }

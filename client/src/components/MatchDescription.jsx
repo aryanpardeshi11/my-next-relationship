@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from 'react';
 
-export default function MatchDescription({ matchData, onDescriptionChange, triggerRef }) {
+export default function MatchDescription({ matchData, userInput, onDescriptionChange, triggerRef }) {
   const [description, setDescription] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   // Client-side sarcastic fallback generator (100% uptime guaranteed)
-  const generateClientFallback = (match) => {
+  const generateClientFallback = (match, user) => {
     const { age, height, job, gender, personality, hobby, greenFlag } = match || {};
+    const userAge = user?.age ? `${user.age} y/o` : null;
+    const userGender = user?.gender || null;
+    const userPrefix = (userAge && userGender) ? `As a ${userAge} ${userGender}, ` : (userGender ? `As a ${userGender}, ` : '');
+
     const scenarios = [
-      `Your future with this ${height} ${gender || 'partner'} (${age} y/o) who works as a ${job || 'freelancer'} revolves around their core obsession: "${personality || 'Fears Tupperware'}". Expect romantic date nights where they compel you into aggressive ${hobby || 'Sock Sorting'} while treating "${greenFlag || 'Claps On Landing'}" as their non-negotiable love language.`,
-      `Imagine coming home to a ${age}-year-old ${job || 'Line Stander'} (${height}) whose entire vibe is "${personality || 'Rates Tap Water'}". They will drag you into emergency sessions of ${hobby || 'Cloud Rating'} and unironically consider "${greenFlag || 'Brings Spreadsheet'}" to be peak emotional intimacy.`,
-      `Dating this ${height} ${job || 'Pet Psychic'} means accepting that "${personality || 'Refuses Tuesdays'}" isn't just a quirk—it's a lifestyle. Between random rounds of ${hobby || 'Baking Micro-Pies'}, they will look you in the eyes and declare "${greenFlag || 'Whispers Nice Paying'}" as their wedding vow.`
+      `${userPrefix}your future with this ${height} ${gender || 'partner'} (${age} y/o) who works as a ${job || 'freelancer'} revolves around their core obsession: "${personality || 'Fears Tupperware'}". Expect romantic date nights where they compel you into aggressive ${hobby || 'Sock Sorting'} while treating "${greenFlag || 'Claps On Landing'}" as their non-negotiable love language.`,
+      `Imagine a ${userAge || ''} ${userGender || 'person'} like you coming home to a ${age}-year-old ${job || 'Line Stander'} (${height}) whose entire vibe is "${personality || 'Rates Tap Water'}". They will drag you into emergency sessions of ${hobby || 'Cloud Rating'} and unironically consider "${greenFlag || 'Brings Spreadsheet'}" to be peak emotional intimacy.`,
+      `${userPrefix}dating this ${height} ${job || 'Pet Psychic'} means accepting that "${personality || 'Refuses Tuesdays'}" isn't just a quirk—it's a lifestyle. Between random rounds of ${hobby || 'Baking Micro-Pies'}, they will look you in the eyes and declare "${greenFlag || 'Whispers Nice Paying'}" as their wedding vow.`
     ];
     return scenarios[Math.floor(Math.random() * scenarios.length)];
   };
@@ -29,13 +33,13 @@ export default function MatchDescription({ matchData, onDescriptionChange, trigg
         response = await fetch(primaryUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ match: matchData }),
+          body: JSON.stringify({ match: matchData, user: userInput }),
         });
       } catch (e) {
         response = await fetch(secondaryUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ match: matchData }),
+          body: JSON.stringify({ match: matchData, user: userInput }),
         });
       }
 
@@ -48,14 +52,14 @@ export default function MatchDescription({ matchData, onDescriptionChange, trigg
       }
 
       if (!desc) {
-        desc = generateClientFallback(matchData);
+        desc = generateClientFallback(matchData, userInput);
       }
 
       setDescription(desc);
       if (onDescriptionChange) onDescriptionChange(desc);
     } catch (err) {
       console.warn('Network error fetching description. Using client fallback:', err);
-      const fallbackDesc = generateClientFallback(matchData);
+      const fallbackDesc = generateClientFallback(matchData, userInput);
       setDescription(fallbackDesc);
       if (onDescriptionChange) onDescriptionChange(fallbackDesc);
     } finally {

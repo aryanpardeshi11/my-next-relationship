@@ -238,6 +238,7 @@ export default function App() {
               <div style={{ animation: 'fadeIn 0.3s ease' }}>
                 <MatchDescription
                   matchData={matchData}
+                  userInput={lastUserInput}
                   onDescriptionChange={setMatchDescription}
                   triggerRef={descTriggerRef}
                 />
@@ -285,6 +286,7 @@ export default function App() {
             {isShareModalOpen && (
               <SocialShareModal
                 matchData={matchData}
+                userInput={lastUserInput}
                 matchDescription={matchDescription}
                 onClose={() => setIsShareModalOpen(false)}
               />

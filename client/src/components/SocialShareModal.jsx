@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import html2canvas from 'html2canvas';
 
-export default function SocialShareModal({ matchData, matchDescription, onClose }) {
+export default function SocialShareModal({ matchData, userInput, matchDescription, onClose }) {
   const [isGenerating, setIsGenerating] = useState(false);
   const [copied, setCopied] = useState(false);
   const snapCardRef = useRef(null);
@@ -11,7 +11,11 @@ export default function SocialShareModal({ matchData, matchDescription, onClose 
     : 'my-next-relationship.onrender.com';
 
   const getShareText = () => {
-    let text = `My Next Relationship Match\n`;
+    let text = `🔥 MY NEXT RELATIONSHIP MATCH 🔥\n`;
+    if (userInput && (userInput.age || userInput.gender)) {
+      text += `🎯 SEEKER: ${userInput.age} y/o ${userInput.gender}\n`;
+    }
+    text += `💖 PREDICTED MATCH:\n`;
     text += `👤 Age: ${matchData.age} | ${matchData.gender}\n`;
     text += `📏 Height: ${matchData.height}\n`;
     text += `💼 Job: ${matchData.job}\n`;
@@ -105,6 +109,17 @@ export default function SocialShareModal({ matchData, matchDescription, onClose 
             <div className="snap-card-badge">DYNAMIC MATCHMAKING ENGINE // VER 1.0</div>
             <h2 className="snap-card-title">MY NEXT RELATIONSHIP</h2>
 
+            {userInput && (userInput.age || userInput.gender) && (
+              <div className="snap-seeker-banner">
+                <span className="seeker-tag">🎯 SEEKER PROFILE</span>
+                <div className="seeker-info">
+                  👤 <strong>YOU:</strong> {userInput.age} y/o {userInput.gender}
+                  <span className="seeker-vs"> ➔ </span>
+                  💖 <strong>MATCH:</strong> {matchData.age} y/o {matchData.gender}
+                </div>
+              </div>
+            )}
+
             <div className="snap-params-grid">
               <div className="snap-param-item"><strong>AGE:</strong> {matchData.age}</div>
               <div className="snap-param-item"><strong>GENDER:</strong> {matchData.gender}</div>
@@ -136,6 +151,11 @@ export default function SocialShareModal({ matchData, matchDescription, onClose 
             </div>
             <div className="mini-snap-card">
               <div style={{ fontWeight: '900', fontSize: '1rem', color: '#000', marginBottom: '0.4rem' }}>MY NEXT RELATIONSHIP</div>
+              {userInput && (userInput.age || userInput.gender) && (
+                <div style={{ background: '#FFFC00', border: '1.5px solid #000', padding: '0.25rem 0.4rem', fontSize: '0.75rem', fontWeight: '800', marginBottom: '0.4rem', color: '#000' }}>
+                  🎯 <strong>YOU:</strong> {userInput.age} y/o {userInput.gender} ➔ 💖 <strong>MATCH:</strong> {matchData.age} y/o {matchData.gender}
+                </div>
+              )}
               <div style={{ fontSize: '0.82rem', lineHeight: '1.4', fontWeight: '700' }}>
                 👤 {matchData.age} y/o {matchData.gender} ({matchData.height})<br />
                 💼 {matchData.job}<br />
