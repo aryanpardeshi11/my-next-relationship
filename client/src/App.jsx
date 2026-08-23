@@ -134,16 +134,27 @@ export default function App() {
 
   // Client-side fallback match generator (50+ items per pool, desperation tiering, & Pity System)
   const generateClientFallback = (userInput, currentCount) => {
-    // Pity System: After every 3 chaotic attempts, the 4th attempt yields a genuine realistic match!
+    // Pity System: After every 3 chaotic attempts, the 4th attempt yields a fresh, unique genuine realistic match!
     if (currentCount && currentCount % 4 === 0) {
+      const realisticPool = [
+        { age: '26', height: `5'10"`, job: 'Architect', personality: 'Makes Great Coffee', hobby: 'Golden Hour Photography', greenFlag: 'Remembers Your Birthday' },
+        { age: '27', height: `5'11"`, job: 'UX Designer', personality: 'Great Listener & Empathetic', hobby: 'Weekend Hiking & Cooking', greenFlag: 'Communicates Openly' },
+        { age: '25', height: `5'8"`, job: 'Botanist & Florist', personality: 'Calm & Warm Energy', hobby: 'Stargazing & Acoustic Guitar', greenFlag: 'Sends Sweet Good Morning Texts' },
+        { age: '28', height: `6'0"`, job: 'Software Engineer', personality: 'Witty & Thoughtful', hobby: 'Baking Sourdough & Board Games', greenFlag: 'Always Cleans Up As They Cook' },
+        { age: '26', height: `5'9"`, job: 'Pediatric Nurse', personality: 'Patient & Super Kind', hobby: 'Pottery & Farmers Market Trips', greenFlag: 'Notices The Smallest Details' },
+        { age: '29', height: `6'1"`, job: 'Graphic Novel Illustrator', personality: 'Creative & Affectionate', hobby: 'Indie Coffee Shop Hopping', greenFlag: 'Makes Amazing Playlists For You' },
+        { age: '27', height: `5'7"`, job: 'Environmental Scientist', personality: 'Passionate & Down To Earth', hobby: 'Camping & Wildlife Photography', greenFlag: 'Always Holds The Door Open' },
+        { age: '28', height: `5'10"`, job: 'Interior Designer', personality: 'Organized & Sweet Humor', hobby: 'Vintage Record Collecting', greenFlag: 'Supports Your Dreams 100%' },
+        { age: '26', height: `6'2"`, job: 'Physiotherapist', personality: 'Supportive & Playful', hobby: 'Bouldering & Sunset Walks', greenFlag: 'Remembers How You Take Your Coffee' },
+        { age: '27', height: `5'8"`, job: 'Literature Teacher', personality: 'Articulate & Deeply Caring', hobby: 'Book Clubs & Rainy Day Reading', greenFlag: 'Never Leaves You On Read' }
+      ];
+
+      const matchIdx = Math.floor((currentCount / 4) - 1) % realisticPool.length;
+      const picked = realisticPool[matchIdx];
+
       return {
-        age: '26',
-        height: `5'10"`,
-        job: 'Architect',
+        ...picked,
         gender: userInput?.gender === 'Male' ? 'Female' : 'Male',
-        personality: 'Makes Great Coffee',
-        hobby: 'Golden Hour Photography',
-        greenFlag: 'Remembers Your Birthday',
         isPerfectMatch: true
       };
     }
