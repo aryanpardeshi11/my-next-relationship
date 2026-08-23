@@ -39,8 +39,7 @@ export default function ZigZagDiagram({ matchData, matchSource, onPredictionComp
       '84', '87', '89', '91', '94'
     ],
     gender: [
-      'Genderfluid', 'Agender', 'Non-binary', 'Cisgender Male', 'Transgender Woman',
-      'Two-Spirit', 'Demigirl', 'Pangender'
+      'Male', 'Female', 'Transgender Woman', 'Transgender Man', 'Non-binary', 'Agender'
     ],
     height: [
       '4\'11" and ¾"', '6\'8"', '5\'2" (5\'7" in boots)', '6\'1" (2mm exact)', '4\'9" big boots',

@@ -18,7 +18,7 @@ Have you ever wondered what the universe (or a chaotic AI algorithm) has planned
 Instead of standard dates, the **Predictive Match Path** generates 7 hilarous, statistically improbable parameters connected visually along a 3-peak wave path:
 
 1. **Age**: Extreme numeric age strictly between `12–19` or `45–90` (e.g. `14`, `78`, `89`).
-2. **Gender**: Inclusive identity selected randomly (e.g. `Genderfluid`, `Agender`, `Non-binary`).
+2. **Gender**: Identity selected randomly (e.g. `Male`, `Female`, `Non-binary`).
 3. **Height**: Highly specific / unusual height (e.g. `4'11" and ¾"`, `6'8"`, `5'2" (5'7" in boots)`).
 4. **Occupation**: Weird real-world jobs (e.g. `Golf Ball Diver`, `Water Slide Tester`, `Pet Psychic`).
 5. **Personality**: Concise sarcastic trait (e.g. `Fears Tupperware`, `Ranks Soup Brands`).

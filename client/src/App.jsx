@@ -56,7 +56,7 @@ export default function App() {
     const ages = ['12', '13', '14', '15', '16', '17', '18', '19', '45', '47', '51', '54', '58', '62', '65', '69', '72', '75', '78', '81', '84', '87', '89'];
     const heights = [`4'11" and ¾"`, `6'8"`, `5'2" (5'7" in boots)`, `6'1" (2mm exact)`, `7'0"`, `5'0" on tiptoes`, `6'5" and a half`, `4'10" exactly` ];
     const jobs = ['Golf Ball Diver', 'Water Slide Tester', 'Line Stander', 'Fortune Writer', 'Pet Psychic', 'Odor Judge', 'Paint Inspector', 'Lego Separator', 'Dice Tester'];
-    const genders = ['Genderfluid', 'Agender', 'Non-binary', 'Cisgender Male', 'Transgender Woman', 'Two-Spirit', 'Demigirl', 'Pangender'];
+    const genders = ['Male', 'Female', 'Transgender Woman', 'Transgender Man', 'Non-binary', 'Agender'];
     const personalities = ['Fears Tupperware', 'Ranks Soup Brands', 'Eats Yellow Food', 'Quotes Old Movies', 'Competes W/ Toddlers', 'Rates Eye Contact', 'Whispers To Plants'];
     const hobbies = ['Bird Watching', 'Collecting Lint', 'Baking Micro-Pies', 'Aggressive Origami', 'Cat Pitch Tuning', 'Synchronized Mowing', 'Sock Sorting', 'Cloud Rating'];
     const greenFlags = ['Claps On Landing', 'Wipes On Jeans', 'Brings Spreadsheet', 'Whispers "Nice" Paying', 'Listens 2.5x Speed', 'Asks "Who Am I?"', 'Reply-All On Emails', 'Ketchup On Tacos'];

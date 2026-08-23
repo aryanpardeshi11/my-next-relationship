@@ -36,8 +36,7 @@ function generateFallbackMatch(userAge, userGender) {
   ];
 
   const genders = [
-    'Genderfluid', 'Agender', 'Non-binary', 'Cisgender Male', 'Transgender Woman',
-    'Two-Spirit', 'Demigirl', 'Pangender'
+    'Male', 'Female', 'Transgender Woman', 'Transgender Man', 'Non-binary', 'Agender'
   ];
 
   const personalities = [
@@ -173,7 +172,7 @@ Strict Constraints:
 - Age: extreme age strictly between 12-19 OR 45-90. NEVER 20-40. Output ONLY the numeric age number (e.g. "14", "78", "16", "89"). Do NOT include any parenthetical comments or text.
 - Height: unusual specific height (e.g., "4'11 and ¾\"", "6'8\"", "5'3.5\"").
 - Job: weird profession in 2-3 words (e.g. "Golf Ball Diver", "Water Slide Tester", "Pet Food Taster").
-- Gender: inclusive gender identity (e.g. Agender, Genderfluid, Non-binary, Cisgender Male, Transgender Woman, Two-Spirit, Demigirl).
+- Gender: gender identity (e.g. Male, Female, Transgender Woman, Transgender Man, Non-binary, Agender).
 - Personality: short sarcastic trait in 2-3 words (e.g. "Fears Tupperware", "Ranks Soup Brands").
 - Hobby: short weird hobby in 2-3 words (e.g. "Bird Watching", "Collecting Lint", "Micro-Pies").
 - Green Flag: short sarcastic red-flag habit labeled as green flag in satire (e.g. "Claps On Plane Landing", "Brings Date Spreadsheet").
